@@ -1,2 +1,7 @@
-// Store the image prompt from chat GTP here
+import React from "react";
 
+const ImagePrompt = () => {
+  return "dog";
+};
+
+export default ImagePrompt;
