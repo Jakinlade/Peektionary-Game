@@ -7,7 +7,7 @@ function ImageGenerator() {
   const defaultPrompt = "dog";
   const [prompt] = useState(defaultPrompt);
   const configuration = new Configuration({
-    // apiKey: REPLACE ME,
+    apiKey: "MISSING",
   });
 
   const openai = new OpenAIApi(configuration);
@@ -27,7 +27,7 @@ const generateImage = async () => {
   return (
     <div className="app-main">
         <button onClick={generateImage}>generate</button>
-          <img className="result-image" data="{imagePrompt}" src={result} alt="result" />
+          <img className="result-image" src={result} alt="result" />
     </div>
   );
 }

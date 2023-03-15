@@ -2,8 +2,8 @@ import "./App.css";
 
 import React, { useState } from "react";
 import DifficultySelector from "./components/DifficultySelector";
-import Image from "./components/Image";
-
+// import Image from "./components/Image";
+import ImageGenerator from "./components/imageGenerator";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
@@ -40,7 +40,9 @@ const Game = () => {
   return (
     <div>
       <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
-      <div>{Image}</div>
+      <div>
+        <ImageGenerator />
+      </div>
       <div>
         {prompt.split(" ").map((word, index) => {
           if (correctWords.includes(word)) {
