@@ -1,13 +1,14 @@
 import { Configuration, OpenAIApi } from "openai";
 import { useState } from "react";
-import imagePrompt from "./ImagePrompt";
+import { imagePrompt } from "./ImagePrompt";
+import apiKey  from "./API"
 
 function ImageGenerator() {
   // prop form imageprompt.jsx
   const defaultPrompt = "dog";
   const [prompt] = useState(defaultPrompt);
   const configuration = new Configuration({
-    apiKey: "MISSING",
+    apiKey: apiKey,
   });
 
   const openai = new OpenAIApi(configuration);
