@@ -7,7 +7,7 @@ function ImageGenerator() {
   const defaultPrompt = "dog";
   const [prompt] = useState(defaultPrompt);
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: ,
   });
 
   const openai = new OpenAIApi(configuration);
