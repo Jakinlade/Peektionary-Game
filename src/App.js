@@ -2,16 +2,19 @@ import "./App.css";
 
 import React, { useState } from "react";
 import DifficultySelector from "./components/DifficultySelector";
-// import Image from "./components/Image";
 import ImageGenerator from "./components/imageGenerator";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
 
+  // Use the generated word from ImagePrompt component
+  const handleGeneratePrompt = (generatedWord) => {
+    setPrompt(generatedWord);
+  };
+
   const handleSelectDifficulty = (difficulty) => {
-    const initialPrompt = "dog"; // replace this with the initial seed word you want to use
-    let promptWords = [initialPrompt];
+    let promptWords = [prompt]; // use the generated word from ImagePrompt component as the initial prompt
 
     for (let i = 0; i < difficulty - 1; i++) {
       // use ChatGPT to generate the next word based on the previous words
@@ -52,7 +55,9 @@ const Game = () => {
           }
         })}
       </div>
-      <form id="input-bar" class="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
+      <form
+        id="input-bar"
+        className="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
         onSubmit={(event) => {
           event.preventDefault();
           const guess = event.target.elements.guess.value;
@@ -66,7 +71,10 @@ const Game = () => {
         </label>
         <button type="submit">Submit</button>
       </form>
-      <div id="back-box-three" class="bg-rose-700 border-2 border-solid border-zinc-900"></div>
+      <div
+        id="back-box-three"
+        className="bg-rose-700 border-2 border-solid border-zinc-900"
+      ></div>
     </div>
   );
 };
