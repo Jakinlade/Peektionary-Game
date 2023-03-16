@@ -26,9 +26,14 @@ const generateImage = async () => {
 
   
   return (
-    <div className="app-main">
-        <button onClick={generateImage}>generate</button>
+    <div>
+    <button onClick={generateImage}>generate</button>
+    <div className="app-main" id="image-container" class="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300">
+      <div id="imageBtn">
           <img className="result-image" src={result} alt="result" />
+        </div>
+    </div>
+    <div id="back-box-two" class="bg-blue-700 border-2 border-solid border-zinc-900"></div>
     </div>
   );
 }

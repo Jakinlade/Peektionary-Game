@@ -14,13 +14,19 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
   
     // Render a div containing a header and buttons for each difficulty level
     return (
-      <div>
+      <div class="">
+      <div id="select-level" class="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300">
         <h2>Select difficulty:</h2>
         <button onClick={() => handleDifficultyClick(1)}>1</button>
         <button onClick={() => handleDifficultyClick(2)}>2</button>
         <button onClick={() => handleDifficultyClick(3)}>3</button>
         <button onClick={() => handleDifficultyClick(4)}>4</button>
         <button onClick={() => handleDifficultyClick(5)}>5</button>
+      </div>
+
+      <div id="back-box-one" class="bg-red-700 border-2 border-solid border-zinc-900">
+
+      </div>
       </div>
     );
   };

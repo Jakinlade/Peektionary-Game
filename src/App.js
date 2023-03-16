@@ -48,11 +48,11 @@ const Game = () => {
           if (correctWords.includes(word)) {
             return <span key={index}>{word} </span>;
           } else {
-            return <span key={index}>_ </span>;
+            return <span key={index}>_</span>;
           }
         })}
       </div>
-      <form
+      <form id="input-bar" class="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
         onSubmit={(event) => {
           event.preventDefault();
           const guess = event.target.elements.guess.value;
@@ -66,6 +66,7 @@ const Game = () => {
         </label>
         <button type="submit">Submit</button>
       </form>
+      <div id="back-box-three" class="bg-teal-700 border-2 border-solid border-zinc-900"></div>
     </div>
   );
 };
