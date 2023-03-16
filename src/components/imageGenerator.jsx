@@ -27,11 +27,15 @@ const generateImage = async () => {
   
   return (
     <div>
-    <button onClick={generateImage}>generate</button>
+    <div id="button-bar">
+    <button id="generateBtn" onClick={generateImage} class="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300">generate</button>
+    <button id="timer" onClick={generateImage} class="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300">timer: time left</button>
+    <button id="showHint" onClick={generateImage} class="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300">show hint</button>
+    <div id="button-bar-box" class="bg-teal-700 border-2 border-solid border-zinc-900"></div>
+    </div>
+
     <div className="app-main" id="image-container" class="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300">
-      <div id="imageBtn">
-          <img className="result-image" src={result} alt="result" />
-        </div>
+          <img class="object-fill aspect-auto" src={result} alt="result" />
     </div>
     <div id="back-box-two" class="bg-blue-700 border-2 border-solid border-zinc-900"></div>
     </div>

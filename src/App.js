@@ -66,7 +66,7 @@ const Game = () => {
         </label>
         <button type="submit">Submit</button>
       </form>
-      <div id="back-box-three" class="bg-teal-700 border-2 border-solid border-zinc-900"></div>
+      <div id="back-box-three" class="bg-rose-700 border-2 border-solid border-zinc-900"></div>
     </div>
   );
 };

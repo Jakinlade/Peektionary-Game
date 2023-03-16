@@ -39,7 +39,7 @@ code {
 
 #image-container {
   width: 30rem;
-  height: 10rem;
+  height: 18rem;
   position: absolute;
   z-index: 2;
   margin-bottom: 1rem;
@@ -49,7 +49,7 @@ code {
 
 #back-box-two {
   width: 30rem;
-  height: 10rem;
+  height: 18rem;
   position: relative;
   top: 5px;
   left: 5px;
@@ -77,3 +77,47 @@ code {
   margin-bottom: 1rem;
   margin-left: 1rem;
 }
+
+#button-bar {
+  width: 30rem;
+  height: 2.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+#button-bar-box {
+  width: 30rem;
+  height: 2.5rem;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+#generateBtn {
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+#timer {
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+#showHint {
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  justify-content: flex-end;
+}
+
