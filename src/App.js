@@ -12,10 +12,6 @@ const Game = () => {
   const [correctWords, setCorrectWords] = useState([]);
   const [difficulty, setDifficulty] = useState("easy");
 
-  const handleSelectDifficulty = (selectedDifficulty) => {
-    setDifficulty(selectedDifficulty);
-  };
-
   // Use the generated word from ImagePrompt component
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
@@ -50,34 +46,32 @@ const Game = () => {
     // handle game won logic here
   };
 
+  const handleSelectDifficulty = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
+  };
+
   return (
     <div>
-    <CountdownTimer />
-    <div>
-      <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
+      <CountdownTimer />
       <div>
-        <ImageGenerator />
+        <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
+        <div>
+          <ImageGenerator
+            difficulty={difficulty}
+            onGeneratePrompt={handleGeneratePrompt}
+          />
+        </div>
+        <PromptDisplay
+          prompt={prompt}
+          correctWords={correctWords}
+          gameWon={handleGameWon}
+        />
+        <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
+        <div
+          id="back-box-three"
+          className="bg-rose-700 border-2 border-solid border-zinc-900"
+        ></div>
       </div>
-      <div>
-        {prompt.split(" ").map((word, index) => {
-          if (correctWords.includes(word)) {
-            return <span key={index}>{word} </span>;
-          } else {
-            return <span key={index}>_</span>;
-          }
-        })}
-      </div>
-      <PromptDisplay
-        prompt={prompt}
-        correctWords={correctWords}
-        gameWon={handleGameWon}
-      />
-      <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
-      <div
-        id="back-box-three"
-        className="bg-rose-700 border-2 border-solid border-zinc-900"
-      ></div>
-    </div>
     </div>
   );
 };
