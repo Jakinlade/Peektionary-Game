@@ -1,4 +1,5 @@
 import "./App.css";
+import CountdownTimer from "./components/CountdownTimer";
 
 import React, { useState } from "react";
 import DifficultySelector from "./components/DifficultySelector";
@@ -39,6 +40,8 @@ const Game = () => {
 
   return (
     <div>
+    <CountdownTimer />
+    <div>
       <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       <div>
         <ImageGenerator />
@@ -67,6 +70,7 @@ const Game = () => {
         <button type="submit">Submit</button>
       </form>
       <div id="back-box-three" class="bg-rose-700 border-2 border-solid border-zinc-900"></div>
+    </div>
     </div>
   );
 };

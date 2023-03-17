@@ -17,6 +17,13 @@ code {
     monospace;
 }
 
+#header {
+  margin-bottom: 2rem;
+  font-size: 4em;
+  color: #000;
+  text-shadow: 3px 3px 0px #a2a3a3, 8px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
 #select-level {
   width: 30rem;
   height: 3rem;
