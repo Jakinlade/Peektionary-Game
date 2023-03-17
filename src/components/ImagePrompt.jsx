@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DifficultySelector from "./DifficultySelector";
 import { generateSlug } from "random-word-slugs";
+import ImageGenerator from "./imageGenerator";
 
 const ImagePrompt = () => {
   const [difficulty, setDifficulty] = useState("easy");

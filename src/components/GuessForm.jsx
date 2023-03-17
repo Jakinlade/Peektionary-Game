@@ -1,4 +1,3 @@
-// input bar for user to guess the word(s)
 import React from "react";
 
 const GuessForm = ({ handleGuess, resetForm }) => {

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
+import PromptDisplay from "./components/PromptDisplay";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
@@ -37,6 +38,15 @@ const Game = () => {
 
     // update the list of correct words
     setCorrectWords([...correctWords, ...newCorrectWords]);
+
+    if (newCorrectWords.length === prompt.split(" ").length) {
+      handleGameWon();
+    }
+  };
+
+  const handleGameWon = () => {
+    console.log("You won the game!");
+    // handle game won logic here
   };
 
   return (
@@ -54,6 +64,11 @@ const Game = () => {
           }
         })}
       </div>
+      <PromptDisplay
+        prompt={prompt}
+        correctWords={correctWords}
+        gameWon={handleGameWon}
+      />
       <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
       <div
         id="back-box-three"
