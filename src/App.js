@@ -1,4 +1,5 @@
 import "./App.css";
+import CountdownTimer from "./components/CountdownTimer";
 
 import React, { useState } from "react";
 import ImageGenerator from "./components/imageGenerator";
@@ -51,6 +52,8 @@ const Game = () => {
 
   return (
     <div>
+    <CountdownTimer />
+    <div>
       <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       <div>
         <ImageGenerator />
@@ -74,6 +77,7 @@ const Game = () => {
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"
       ></div>
+    </div>
     </div>
   );
 };
