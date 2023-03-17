@@ -3,9 +3,9 @@ import { useState } from "react";
 import ImagePrompt from "./ImagePrompt";
 import apiKey  from "./API"
 
-function ImageGenerator() {
+function ImageGenerator(props) {
   // prop form imageprompt.jsx
-  const defaultPrompt = "<ImagePrompt />";
+  const slug = ImagePrompt.slug;
   const [prompt] = useState(defaultPrompt);
   const configuration = new Configuration({
     apiKey: apiKey,

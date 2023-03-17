@@ -1,27 +1,26 @@
 import "./App.css";
 
 import React, { useState } from "react";
-import DifficultySelector from "./components/DifficultySelector";
 import ImageGenerator from "./components/imageGenerator";
+import GuessForm from "./components/GuessForm";
+import DifficultySelector from "./components/DifficultySelector";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
+  const [difficulty, setDifficulty] = useState("easy");
+
+  const handleSelectDifficulty = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
+  };
 
   // Use the generated word from ImagePrompt component
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
   };
 
-  const handleSelectDifficulty = (difficulty) => {
-    let promptWords = [prompt]; // use the generated word from ImagePrompt component as the initial prompt
-
-    for (let i = 0; i < difficulty - 1; i++) {
-      // use ChatGPT to generate the next word based on the previous words
-      // and add it to the promptWords array
-    }
-
-    setPrompt(promptWords.join(" "));
+  const resetForm = () => {
+    document.getElementById("input-bar").reset();
   };
 
   const handleGuess = (guess) => {
@@ -55,22 +54,7 @@ const Game = () => {
           }
         })}
       </div>
-      <form
-        id="input-bar"
-        className="text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
-        onSubmit={(event) => {
-          event.preventDefault();
-          const guess = event.target.elements.guess.value;
-          handleGuess(guess);
-          event.target.reset();
-        }}
-      >
-        <label>
-          Guess:
-          <input type="text" name="guess" />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
+      <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
       <div
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"

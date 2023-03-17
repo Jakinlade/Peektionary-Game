@@ -47,12 +47,7 @@ const ImagePrompt = () => {
     });
   }
 
-  return (
-    <div>
-      <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
-      <div>{slug}</div>
-    </div>
-  );
+  return <ImageGenerator prompt={slug} />;
 };
 
 export default ImagePrompt;
