@@ -1,18 +1,17 @@
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
-
 import React, { useState } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
+import ImagePrompt from "./components/ImagePrompt";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
-  const [difficulty, setDifficulty] = useState("easy");
+  const [difficulty, setDifficulty] = useState("medium");
 
-  // Use the generated word from ImagePrompt component
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
   };
@@ -52,26 +51,32 @@ const Game = () => {
 
   return (
     <div>
-      <CountdownTimer />
+      <div>
+        <CountdownTimer />
+      </div>
       <div>
         <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
-        <div>
-          <ImageGenerator
-            difficulty={difficulty}
-            onGeneratePrompt={handleGeneratePrompt}
-          />
-        </div>
+      </div>
+      <div>
+        <ImageGenerator
+          difficulty={difficulty}
+          onGeneratePrompt={handleGeneratePrompt}
+        />
+      </div>
+      <div>
         <PromptDisplay
           prompt={prompt}
           correctWords={correctWords}
           gameWon={handleGameWon}
         />
-        <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
-        <div
-          id="back-box-three"
-          className="bg-rose-700 border-2 border-solid border-zinc-900"
-        ></div>
       </div>
+      <div>
+        <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
+      </div>
+      <div
+        id="back-box-three"
+        className="bg-rose-700 border-2 border-solid border-zinc-900"
+      ></div>
     </div>
   );
 };

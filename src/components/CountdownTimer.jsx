@@ -1,7 +1,7 @@
 import React from "react";
 
 function CountdownTimer() {
-    const [timer, setTimer] = React.useState(10);
+    const [timer, setTimer] = React.useState(100);
     const id = React.useRef(null);
     const clear = () => {
         window.clearInterval(id.current);
