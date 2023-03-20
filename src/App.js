@@ -10,10 +10,11 @@ import ImagePrompt from "./components/ImagePrompt";
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
-  const [difficulty, setDifficulty] = useState("medium");
+  const [difficulty, setDifficulty] = useState("easy");
 
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
+    console.log(generatedWord);
   };
 
   const resetForm = () => {
@@ -49,17 +50,22 @@ const Game = () => {
     setDifficulty(selectedDifficulty);
   };
 
+  const handleDifficultyChange = (event) => {
+    setDifficulty(event.target.value);
+  };
+
   return (
     <div>
       <div>
         <CountdownTimer />
-      </div>
+        </div>
       <div>
         <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       </div>
       <div>
         <ImageGenerator
           difficulty={difficulty}
+          onSelectDifficulty={handleSelectDifficulty} // update prop name
           onGeneratePrompt={handleGeneratePrompt}
         />
       </div>
