@@ -58,14 +58,13 @@ const Game = () => {
     <div>
       <div>
         <CountdownTimer />
-        </div>
+      </div>
       <div>
         <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       </div>
       <div>
         <ImageGenerator
           difficulty={difficulty}
-          onSelectDifficulty={handleSelectDifficulty} // update prop name
           onGeneratePrompt={handleGeneratePrompt}
         />
       </div>

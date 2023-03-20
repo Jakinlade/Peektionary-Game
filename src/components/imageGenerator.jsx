@@ -20,6 +20,7 @@ function ImageGenerator(props) {
   };
 
   const handleSelectDifficulty = (selectedDifficulty) => {
+    console.log(selectedDifficulty); 
     let slug;
     if (selectedDifficulty === "easy") {
       slug = generateSlug(1, {
