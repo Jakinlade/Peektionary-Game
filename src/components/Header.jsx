@@ -1,11 +1,12 @@
 import React from "react";
+import logo from "./logo.jpg"; 
 
 function Header() {
-    return (
-        <div id="header" className="text-6xl text-center p-2">
-        <h1>peektionary</h1>
-        </div>
-    );
+  return (
+    <div>
+      <img class="scale-50" src={logo} alt="My Logo" />
+    </div>
+  );
 }
 
 export default Header;
