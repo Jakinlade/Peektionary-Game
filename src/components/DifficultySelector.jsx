@@ -17,7 +17,7 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
         <button onClick={() => handleDifficultyClick("medium")}>Medium</button>
         <button onClick={() => handleDifficultyClick("hard")}>Hard</button>
       </div>
-        <div id="back-box-one" class="bg-red-700 border-2 border-solid border-zinc-900">
+        <div id="back-box-one" className="bg-red-700 border-2 border-solid border-zinc-900">
         </div>
     </div>
   );
