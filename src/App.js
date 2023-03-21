@@ -1,24 +1,20 @@
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
-
 import React, { useState } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
+import ImagePrompt from "./components/ImagePrompt";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
   const [difficulty, setDifficulty] = useState("easy");
 
-  const handleSelectDifficulty = (selectedDifficulty) => {
-    setDifficulty(selectedDifficulty);
-  };
-
-  // Use the generated word from ImagePrompt component
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
+    console.log(generatedWord);
   };
 
   const resetForm = () => {
@@ -50,34 +46,42 @@ const Game = () => {
     // handle game won logic here
   };
 
+  const handleSelectDifficulty = (selectedDifficulty) => {
+    setDifficulty(selectedDifficulty);
+  };
+
+  const handleDifficultyChange = (event) => {
+    setDifficulty(event.target.value);
+  };
+
   return (
     <div>
-    <CountdownTimer />
-    <div>
-      <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       <div>
-        <ImageGenerator />
+        <CountdownTimer />
       </div>
       <div>
-        {prompt.split(" ").map((word, index) => {
-          if (correctWords.includes(word)) {
-            return <span key={index}>{word} </span>;
-          } else {
-            return <span key={index}>_</span>;
-          }
-        })}
+        <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
       </div>
-      <PromptDisplay
-        prompt={prompt}
-        correctWords={correctWords}
-        gameWon={handleGameWon}
-      />
-      <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
+      <div>
+        <ImageGenerator
+          difficulty={difficulty}
+          onGeneratePrompt={handleGeneratePrompt}
+        />
+      </div>
+      <div>
+        <PromptDisplay
+          prompt={prompt}
+          correctWords={correctWords}
+          gameWon={handleGameWon}
+        />
+      </div>
+      <div>
+        <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
+      </div>
       <div
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"
       ></div>
-    </div>
     </div>
   );
 };
