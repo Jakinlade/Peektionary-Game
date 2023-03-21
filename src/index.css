@@ -10,6 +10,11 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("./images/peek-background.png");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+
 }
 
 code {
@@ -30,19 +35,26 @@ code {
   height: 3rem;
   position: absolute;
   z-index: 2;
+  align-items: center;
+  /* 
+  
   margin-bottom: 1rem;
   margin-left: 1rem;
+   */
 }
 
 #back-box-one {
   width: 30rem;
   height: 3rem;
-  position: relative;
-  top: 5px;
+  top: 2px;
   left: 5px;
+  position: relative;
   z-index: 1;
+
+  /* 
+  
   margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin-left: 1rem; */
 }
 
 #image-container {

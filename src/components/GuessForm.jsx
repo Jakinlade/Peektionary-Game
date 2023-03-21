@@ -34,7 +34,7 @@ const GuessForm = (props) => {
   
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300">
       <label>
         Guess:
         <input type="text" value={guess} onChange={handleInputChange} />
