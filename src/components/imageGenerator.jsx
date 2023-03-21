@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState } from "react";
-import apiKey from "./API"
+import { useState, useEffect } from "react";
+import apiKey from "./API";
 import { generateSlug } from "random-word-slugs";
 
 function ImageGenerator(props) {
@@ -11,18 +11,8 @@ function ImageGenerator(props) {
   const [result, setResult] = useState("");
 
   const generateImage = async (prompt) => {
-    const res = await openai.createImage({
-      prompt: prompt,
-      n: 1,
-      size: "512x512",
-    });
-    setResult(res.data.data[0].url);
-  };
-
-  const handleSelectDifficulty = (selectedDifficulty) => {
-    console.log(selectedDifficulty); 
     let slug;
-    if (selectedDifficulty === "easy") {
+    if (props.difficulty === "easy") {
       slug = generateSlug(1, {
         format: "title",
         partsOfSpeech: ["noun"],
@@ -31,7 +21,7 @@ function ImageGenerator(props) {
           noun: ["animals", "thing"],
         },
       });
-    } else if (selectedDifficulty === "medium") {
+    } else if (props.difficulty === "medium") {
       slug = generateSlug(2, {
         format: "title",
         partsOfSpeech: ["adjective", "noun"],
@@ -57,16 +47,20 @@ function ImageGenerator(props) {
         },
       });
     }
-    console.log(slug)
-    generateImage(slug);
+    console.log(slug);
+    const res = await openai.createImage({
+      prompt: prompt + " " + slug,
+      n: 1,
+      size: "512x512",
+    });
+    setResult(res.data.data[0].url);
   };
 
   return (
     <div>
-      
       <button
         id="generateBtn"
-        onClick={() => handleSelectDifficulty(props.selectedDifficulty)}
+        onClick={() => generateImage(props.prompt)}
         className="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300"
       >
         generate

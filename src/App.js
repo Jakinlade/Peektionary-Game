@@ -5,12 +5,11 @@ import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
-import ImagePrompt from "./components/ImagePrompt";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
-  const [difficulty, setDifficulty] = useState("easy");
+  const [difficulty, setDifficulty] = useState("");
 
   const handleGeneratePrompt = (generatedWord) => {
     setPrompt(generatedWord);
@@ -50,9 +49,9 @@ const Game = () => {
     setDifficulty(selectedDifficulty);
   };
 
-  const handleDifficultyChange = (event) => {
-    setDifficulty(event.target.value);
-  };
+  // const handleDifficultyChange = (event) => {
+  //   setDifficulty(event.target.value);
+  // };
 
   return (
     <div>
