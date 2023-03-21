@@ -67,10 +67,10 @@ function ImageGenerator(props) {
       <button
         id="generateBtn"
         onClick={() => handleSelectDifficulty(props.selectedDifficulty)}
-        className="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300"
-      >
+        className="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300">
         generate
       </button>
+      <div id="button-bar-box" className="bg-teal-700 border-2 border-solid border-zinc-900"></div>
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
@@ -82,6 +82,7 @@ function ImageGenerator(props) {
           data-prompt={props.prompt}
         />
       </div>
+      <div id="back-box-two" className="bg-blue-700 border-2 border-solid border-zinc-900"></div>
     </div>
   );
 }

@@ -11,12 +11,14 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
 
   return (
     <div>
-      <div>
+      <div id="select-level" className="text-2xl border-2 border-solid border-zinc-900 flex justify-evenly bg-gray-300">
         <h2>Select difficulty:</h2>
         <button onClick={() => handleDifficultyClick("easy")}>Easy</button>
         <button onClick={() => handleDifficultyClick("medium")}>Medium</button>
         <button onClick={() => handleDifficultyClick("hard")}>Hard</button>
       </div>
+        <div id="back-box-one" class="bg-red-700 border-2 border-solid border-zinc-900">
+        </div>
     </div>
   );
 };

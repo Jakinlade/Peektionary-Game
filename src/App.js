@@ -5,7 +5,6 @@ import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
-import ImagePrompt from "./components/ImagePrompt";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
