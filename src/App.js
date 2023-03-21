@@ -5,6 +5,7 @@ import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
+import SlugGenerator from "./components/SlugGenerator";
 
 const Game = () => {
   const [prompt, setPrompt] = useState("");
@@ -75,7 +76,13 @@ const Game = () => {
         />
       </div>
       <div>
-        <GuessForm handleGuess={handleGuess} resetForm={resetForm} />
+        <GuessForm
+          prompt={prompt}
+          correctWords={correctWords}
+          setCorrectWords={setCorrectWords}
+          handleGameWon={handleGameWon}
+          slug={SlugGenerator(difficulty)}
+        />
       </div>
       <div
         id="back-box-three"
