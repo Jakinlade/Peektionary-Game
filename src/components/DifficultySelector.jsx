@@ -4,7 +4,7 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState("easy");
 
   const handleDifficultyClick = (difficulty) => {
-    setSelectedDifficulty(difficulty);
+    // setSelectedDifficulty(difficulty);
     onSelectDifficulty(difficulty);
     console.log("Selected difficulty:", difficulty);
   };
