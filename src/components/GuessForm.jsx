@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import SlugGenerator from "./SlugGenerator";
+import React, { useState, useRef, useContext } from "react";
+import GameContext from "./GameContext";
 
-const GuessForm = (props) => {
+const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
+  const { slug } = useContext(GameContext);
   const [guess, setGuess] = useState("");
+  const guessInput = useRef(null);
 
   const handleInputChange = (event) => {
     setGuess(event.target.value);
@@ -10,45 +12,32 @@ const GuessForm = (props) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    handleGuess(guess);
-    setGuess("");
-  };
-
-  const handleGuess = (guess) => {
-    const guessWords = guess.split(" ");
-    const newCorrectWords = [];
-
-    guessWords.forEach((guessWord) => {
-      if (
-        props.prompt.includes(guessWord) &&
-        !props.correctWords.includes(guessWord)
-      ) {
-        newCorrectWords.push(guessWord);
+    const lowerCaseSlug = slug.toLowerCase();
+    const lowerCaseGuess = guess.trim().toLowerCase();
+    if (lowerCaseGuess === lowerCaseSlug) {
+      setCorrectWords([...correctWords, lowerCaseGuess]);
+      setGuess("");
+      guessInput.current.focus();
+      if (correctWords.length + 1 === lowerCaseSlug.split("-").length) {
+        handleGameWon();
       }
-    });
-
-    // Check if the guess matches the slug
-    if (guessWords.includes(props.slug)) {
-      newCorrectWords.push(props.slug);
-    }
-
-    props.setCorrectWords([...props.correctWords, ...newCorrectWords]);
-
-    if (newCorrectWords.length === props.prompt.split(" ").length + 1) {
-      props.handleGameWon();
+    } else {
+      alert("Incorrect guess. Please try again.");
     }
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-    >
+    <form id="input-bar" onSubmit={handleFormSubmit} className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300">
       <label>
         Guess:
-        <input type="text" value={guess} onChange={handleInputChange} />
+        <input
+          type="text"
+          value={guess}
+          onChange={handleInputChange}
+          ref={guessInput}
+        />
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit" onClick={() => handleGuess(guess)} className="hover:font-extrabold">Submit</button>
     </form>
   );
 };
