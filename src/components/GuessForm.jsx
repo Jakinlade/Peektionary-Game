@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import SlugGenerator from "./SlugGenerator";
 
-const GuessForm = (props) => {
+const GuessForm = ({
+  difficulty,
+  correctWords,
+  setCorrectWords,
+  handleGameWon,
+}) => {
   const [guess, setGuess] = useState("");
+  const slug = SlugGenerator(difficulty); // generate a new slug
 
   const handleInputChange = (event) => {
     setGuess(event.target.value);
@@ -15,29 +21,29 @@ const GuessForm = (props) => {
   };
 
   const handleGuess = (guess) => {
+    // split the guess into separate words
     const guessWords = guess.split(" ");
-    const newCorrectWords = [];
-
+  
+    // check if each guess word matches a prompt word
+    let allWordsCorrect = true;
     guessWords.forEach((guessWord) => {
-      if (
-        props.prompt.includes(guessWord) &&
-        !props.correctWords.includes(guessWord)
-      ) {
-        newCorrectWords.push(guessWord);
+      if (!prompt.includes(guessWord) || correctWords.includes(guessWord)) {
+        allWordsCorrect = false;
       }
     });
-
-    // Check if the guess matches the slug
-    if (guessWords.includes(props.slug)) {
-      newCorrectWords.push(props.slug);
-    }
-
-    props.setCorrectWords([...props.correctWords, ...newCorrectWords]);
-
-    if (newCorrectWords.length === props.prompt.split(" ").length + 1) {
-      props.handleGameWon();
+    
+    console.log("Guess:", guessWords);
+    console.log("All words correct:", allWordsCorrect);
+  
+    if (allWordsCorrect) {
+      setCorrectWords([...correctWords, ...guessWords]);
+      if (correctWords.length + guessWords.length === prompt.split(" ").length) {
+        console.log("You win");
+        handleGameWon();
+      }
     }
   };
+  
 
   return (
     <form

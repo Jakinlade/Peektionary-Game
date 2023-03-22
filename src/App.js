@@ -1,6 +1,6 @@
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
@@ -8,51 +8,21 @@ import PromptDisplay from "./components/PromptDisplay";
 import SlugGenerator from "./components/SlugGenerator";
 
 const Game = () => {
-  const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
   const [difficulty, setDifficulty] = useState("");
+  const [slug, setSlug] = useState("");
 
-  const handleGeneratePrompt = (generatedWord) => {
-    setPrompt(generatedWord);
-    console.log(generatedWord);
-  };
-
-  const resetForm = () => {
-    document.getElementById("input-bar").reset();
-  };
-
-  const handleGuess = (guess) => {
-    // split the guess into separate words
-    const guessWords = guess.split(" ");
-    const newCorrectWords = [];
-
-    // check if each guess word matches a prompt word
-    guessWords.forEach((guessWord) => {
-      if (prompt.includes(guessWord) && !correctWords.includes(guessWord)) {
-        newCorrectWords.push(guessWord);
-      }
-    });
-
-    // update the list of correct words
-    setCorrectWords([...correctWords, ...newCorrectWords]);
-
-    if (newCorrectWords.length === prompt.split(" ").length) {
-      handleGameWon();
-    }
-  };
+  useEffect(() => {
+    setSlug(SlugGenerator(difficulty));
+  }, [difficulty]);
 
   const handleGameWon = () => {
     console.log("You won the game!");
-    // handle game won logic here
   };
 
   const handleSelectDifficulty = (selectedDifficulty) => {
     setDifficulty(selectedDifficulty);
   };
-
-  // const handleDifficultyChange = (event) => {
-  //   setDifficulty(event.target.value);
-  // };
 
   return (
     <div>
@@ -65,23 +35,24 @@ const Game = () => {
       <div>
         <ImageGenerator
           difficulty={difficulty}
-          onGeneratePrompt={handleGeneratePrompt}
+          slug={slug}
+          onGeneratePrompt={setSlug}
         />
       </div>
       <div>
         <PromptDisplay
-          prompt={prompt}
+          prompt={slug}
           correctWords={correctWords}
           gameWon={handleGameWon}
         />
       </div>
       <div>
         <GuessForm
-          prompt={prompt}
+          prompt={slug}
           correctWords={correctWords}
           setCorrectWords={setCorrectWords}
           handleGameWon={handleGameWon}
-          slug={SlugGenerator(difficulty)}
+          slug={slug}
         />
       </div>
       <div
