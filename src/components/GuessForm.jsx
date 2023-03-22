@@ -40,15 +40,12 @@ const GuessForm = (props) => {
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-    >
+    <form id="input-bar" onSubmit={handleFormSubmit} className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300">
       <label>
         Guess:
-        <input type="text" value={guess} onChange={handleInputChange} />
+        <input type="text" value={guess} onChange={handleInputChange} className="text-lg border-2 border-solid border-zinc-900"/>
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit" onClick={() => handleGuess(guess)} className="hover:font-extrabold">Submit</button>
     </form>
   );
 };

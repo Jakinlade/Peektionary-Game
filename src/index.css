@@ -10,11 +10,10 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("./images/peek-background.png");
+  background-image: url("./images/bg-one.svg");
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
-
 }
 
 code {
@@ -23,12 +22,26 @@ code {
 }
 
 #header {
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
   font-size: 4em;
-  color: #000;
-  text-shadow: 3px 3px 0px #a2a3a3, 8px 8px 0px rgba(0, 0, 0, 0.1);
+  width: 30rem;
+  height: 2rem;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto;
 }
-
+#game-rules {
+  width: 30rem;
+  height: 3rem;
+  z-index: 2;
+  align-items: center;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
 
 #select-level {
   width: 30rem;
@@ -36,25 +49,31 @@ code {
   position: absolute;
   z-index: 2;
   align-items: center;
-  /* 
-  
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-   */
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #back-box-one {
   width: 30rem;
   height: 3rem;
-  top: 2px;
-  left: 5px;
+  top: 8px;
+  left: 8px;
+  right: 0; 
   position: relative;
   z-index: 1;
+  margin-left: auto; 
+  margin-right: auto; 
+}
 
-  /* 
-  
-  margin-bottom: 1rem;
-  margin-left: 1rem; */
+#generateBtn {
+  width: 30rem;
+  /* align-items: center; */
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-left: auto; 
+  margin-right: auto;
 }
 
 #image-container {
@@ -62,20 +81,22 @@ code {
   height: 18rem;
   position: absolute;
   z-index: 2;
-  margin-bottom: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #back-box-two {
   width: 30rem;
   height: 18rem;
   position: relative;
-  top: 5px;
-  left: 5px;
+  top: 8px;
+  left: 8px;
+  right: 0; 
   z-index: 1;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #input-bar {
@@ -83,19 +104,22 @@ code {
   height: 2.5rem;
   position: absolute;
   z-index: 2;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #back-box-three {
   width: 30rem;
   height: 2.5rem;
   position: relative;
-  top: 5px;
-  left: 5px;
+  top: 8px;
+  left: 8px;
+  right: 0; 
   z-index: 1;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #button-bar {
@@ -103,25 +127,6 @@ code {
   height: 2.5rem;
   position: relative;
   margin-bottom: 1rem;
-}
-
-#button-bar-box {
-  width: 30rem;
-  height: 2.5rem;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  z-index: 1;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-}
-
-#generateBtn {
-  height: 2.5rem;
-  position: relative;
-  z-index: 2;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
 }
 
 #timer {
@@ -141,3 +146,60 @@ code {
   justify-content: flex-end;
 }
 
+/* media queries */
+
+@media only screen and (max-width: 600px) {
+  #header {
+    margin-top: 0.2rem;
+  }
+  
+  #select-level,
+  #back-box-one  {
+    width: 25rem;
+    height: 3rem;
+  }
+
+  #generateBtn {
+    width: 25rem;
+  }
+  
+  #image-container,
+  #back-box-two {
+    width: 25rem;
+    height: 18rem;
+  }
+  
+  #input-bar,
+  #back-box-three {
+    width: 25rem;
+    height: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #header {
+    margin-top: 0.2rem;
+  }
+  
+  #select-level,
+  #back-box-one  {
+    width: 22rem;
+    height: 3rem;
+  }
+
+  #generateBtn {
+    width: 22rem;
+  }
+  
+  #image-container,
+  #back-box-two {
+    width: 22rem;
+    height: 18rem;
+  }
+  
+  #input-bar,
+  #back-box-three {
+    width: 22rem;
+    height: 2.5rem;
+  }
+}
