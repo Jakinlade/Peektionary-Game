@@ -2,16 +2,204 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("./images/bg-one.svg");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#header {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  font-size: 4em;
+  width: 30rem;
+  height: 2rem;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto;
+}
+#game-rules {
+  width: 30rem;
+  height: 3rem;
+  z-index: 2;
+  align-items: center;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#select-level {
+  width: 30rem;
+  height: 3rem;
+  position: absolute;
+  z-index: 2;
+  align-items: center;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#back-box-one {
+  width: 30rem;
+  height: 3rem;
+  top: 8px;
+  left: 8px;
+  right: 0; 
+  position: relative;
+  z-index: 1;
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#generateBtn {
+  width: 30rem;
+  /* align-items: center; */
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+#image-container {
+  width: 30rem;
+  height: 18rem;
+  position: absolute;
+  z-index: 2;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#back-box-two {
+  width: 30rem;
+  height: 18rem;
+  position: relative;
+  top: 8px;
+  left: 8px;
+  right: 0; 
+  z-index: 1;
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#input-bar {
+  width: 30rem;
+  height: 2.5rem;
+  position: absolute;
+  z-index: 2;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#back-box-three {
+  width: 30rem;
+  height: 2.5rem;
+  position: relative;
+  top: 4px;
+  left: 8px;
+  right: 0; 
+  z-index: 1;
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+#button-bar {
+  width: 30rem;
+  height: 2.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+#timer {
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+#showHint {
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  justify-content: flex-end;
+}
+
+/* media queries */
+
+@media only screen and (max-width: 600px) {
+  #header {
+    margin-top: 0.2rem;
+  }
+  
+  #select-level,
+  #back-box-one  {
+    width: 25rem;
+    height: 3rem;
+  }
+
+  #generateBtn {
+    width: 25rem;
+  }
+  
+  #image-container,
+  #back-box-two {
+    width: 25rem;
+    height: 18rem;
+  }
+  
+  #input-bar,
+  #back-box-three {
+    width: 25rem;
+    height: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #header {
+    margin-top: 0.2rem;
+  }
+  
+  #select-level,
+  #back-box-one  {
+    width: 22rem;
+    height: 3rem;
+  }
+
+  #generateBtn {
+    width: 22rem;
+  }
+  
+  #image-container,
+  #back-box-two {
+    width: 22rem;
+    height: 18rem;
+  }
+  
+  #input-bar,
+  #back-box-three {
+    width: 22rem;
+    height: 2.5rem;
+  }
 }
