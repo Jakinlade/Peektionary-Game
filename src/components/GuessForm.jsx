@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import SlugGenerator from "./SlugGenerator";
+import React, { useState, useRef, useContext } from "react";
+import GameContext from "./GameContext";
 
-const GuessForm = ({
-  difficulty,
-  correctWords,
-  setCorrectWords,
-  handleGameWon,
-}) => {
+const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
+  const { slug } = useContext(GameContext);
   const [guess, setGuess] = useState("");
-  const slug = SlugGenerator(difficulty); // generate a new slug
+  const guessInput = useRef(null);
 
   const handleInputChange = (event) => {
     setGuess(event.target.value);
@@ -16,34 +12,19 @@ const GuessForm = ({
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    handleGuess(guess);
-    setGuess("");
-  };
-
-  const handleGuess = (guess) => {
-    // split the guess into separate words
-    const guessWords = guess.split(" ");
-  
-    // check if each guess word matches a prompt word
-    let allWordsCorrect = true;
-    guessWords.forEach((guessWord) => {
-      if (!prompt.includes(guessWord) || correctWords.includes(guessWord)) {
-        allWordsCorrect = false;
-      }
-    });
-    
-    console.log("Guess:", guessWords);
-    console.log("All words correct:", allWordsCorrect);
-  
-    if (allWordsCorrect) {
-      setCorrectWords([...correctWords, ...guessWords]);
-      if (correctWords.length + guessWords.length === prompt.split(" ").length) {
-        console.log("You win");
+    const lowerCaseSlug = slug.toLowerCase();
+    const lowerCaseGuess = guess.trim().toLowerCase();
+    if (lowerCaseGuess === lowerCaseSlug) {
+      setCorrectWords([...correctWords, lowerCaseGuess]);
+      setGuess("");
+      guessInput.current.focus();
+      if (correctWords.length + 1 === lowerCaseSlug.split("-").length) {
         handleGameWon();
       }
+    } else {
+      alert("Incorrect guess. Please try again.");
     }
   };
-  
 
   return (
     <form
@@ -52,7 +33,12 @@ const GuessForm = ({
     >
       <label>
         Guess:
-        <input type="text" value={guess} onChange={handleInputChange} />
+        <input
+          type="text"
+          value={guess}
+          onChange={handleInputChange}
+          ref={guessInput}
+        />
       </label>
       <button type="submit">Submit</button>
     </form>

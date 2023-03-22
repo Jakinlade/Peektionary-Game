@@ -1,9 +1,10 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import apiKey from "./API";
-import SlugGenerator from "./SlugGenerator";
+import GameContext from "./GameContext";
 
 function ImageGenerator(props) {
+  const { slug } = useContext(GameContext); // Get the slug from the GameContext
   const configuration = new Configuration({
     apiKey: apiKey,
   });
@@ -24,7 +25,7 @@ function ImageGenerator(props) {
     <div>
       <button
         id="generateBtn"
-        onClick={() => generateImage(SlugGenerator(props.difficulty))}
+        onClick={() => generateImage(slug)} // Use the slug value from the GameContext
         className="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300"
       >
         generate

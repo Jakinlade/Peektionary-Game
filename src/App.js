@@ -6,6 +6,7 @@ import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
 import SlugGenerator from "./components/SlugGenerator";
+import GameContext from "./components/GameContext";
 
 const Game = () => {
   const [correctWords, setCorrectWords] = useState([]);
@@ -24,8 +25,16 @@ const Game = () => {
     setDifficulty(selectedDifficulty);
   };
 
+  const handleCorrectWords = (newCorrectWords) => {
+    setCorrectWords([...correctWords, ...newCorrectWords]);
+
+    if (newCorrectWords.length === slug.split("-").length) {
+      handleGameWon();
+    }
+  };
+
   return (
-    <div>
+    <GameContext.Provider value={{ slug, setSlug }}>
       <div>
         <CountdownTimer />
       </div>
@@ -35,31 +44,24 @@ const Game = () => {
       <div>
         <ImageGenerator
           difficulty={difficulty}
-          slug={slug}
-          onGeneratePrompt={setSlug}
+          onGeneratePrompt={handleCorrectWords}
         />
       </div>
       <div>
-        <PromptDisplay
-          prompt={slug}
-          correctWords={correctWords}
-          gameWon={handleGameWon}
-        />
+        <PromptDisplay correctWords={correctWords} gameWon={handleGameWon} />
       </div>
       <div>
         <GuessForm
-          prompt={slug}
           correctWords={correctWords}
           setCorrectWords={setCorrectWords}
           handleGameWon={handleGameWon}
-          slug={slug}
         />
       </div>
       <div
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"
       ></div>
-    </div>
+    </GameContext.Provider>
   );
 };
 
