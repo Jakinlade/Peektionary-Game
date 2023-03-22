@@ -27,10 +27,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-    >
+    <form id="input-bar" onSubmit={handleFormSubmit} className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300">
       <label>
         Guess:
         <input
@@ -40,7 +37,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
           ref={guessInput}
         />
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit" onClick={() => handleGuess(guess)} className="hover:font-extrabold">Submit</button>
     </form>
   );
 };

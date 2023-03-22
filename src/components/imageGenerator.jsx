@@ -36,7 +36,7 @@ function ImageGenerator(props) {
       ></div>
       <div
         id="image-container"
-        className="app-main text-2xl border-2 border-solid border-zinc-900 max-w-xl flex justify-around p-px bg-gray-300"
+        className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
       >
         <img
           className="object-fill aspect-auto"

@@ -7,6 +7,8 @@ import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
 import SlugGenerator from "./components/SlugGenerator";
 import GameContext from "./components/GameContext";
+import HintButton from "./components/HintButton";
+
 
 const Game = () => {
   const [correctWords, setCorrectWords] = useState([]);
@@ -56,6 +58,9 @@ const Game = () => {
           setCorrectWords={setCorrectWords}
           handleGameWon={handleGameWon}
         />
+      </div>
+      <div>
+        <HintButton />
       </div>
       <div
         id="back-box-three"
