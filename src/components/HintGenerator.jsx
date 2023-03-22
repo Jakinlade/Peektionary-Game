@@ -1,4 +1,5 @@
 import { useState } from "react";
+import GameContext from "./GameContext";
 
 const slug = "rabbit";
 
