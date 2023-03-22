@@ -35,10 +35,8 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
           Hard
         </button>
       </div>
-      <div
-        id="back-box-one"
-        className="bg-red-700 border-2 border-solid border-zinc-900"
-      ></div>
+        <div id="back-box-one" className="bg-red-700 border-2 border-solid border-zinc-900">
+        </div>
     </div>
   );
 };
