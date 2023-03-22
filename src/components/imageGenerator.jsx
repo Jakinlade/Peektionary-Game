@@ -1,18 +1,20 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import apiKey from "./API";
-import SlugGenerator from "./SlugGenerator";
+import GameContext from "./GameContext";
 
 function ImageGenerator(props) {
+  const { slug } = useContext(GameContext); // Get the slug from the GameContext
   const configuration = new Configuration({
     apiKey: apiKey,
   });
   const openai = new OpenAIApi(configuration);
   const [result, setResult] = useState("");
 
-  const generateImage = async (prompt, slug) => {
+  const generateImage = async (slug) => {
+    console.log(slug);
     const res = await openai.createImage({
-      prompt: prompt + " " + slug,
+      prompt: slug,
       n: 1,
       size: "512x512",
     });
@@ -23,11 +25,15 @@ function ImageGenerator(props) {
     <div>
       <button
         id="generateBtn"
-        onClick={() => generateImage(props.prompt, SlugGenerator(props.difficulty))}
-        className="text-2xl border-2 border-solid border-zinc-900  flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        onClick={() => generateImage(slug)} // Use the slug value from the GameContext
+        className="text-2xl border-2 border-solid border-zinc-900 p-px bg-gray-300"
       >
         generate
       </button>
+      <div
+        id="button-bar-box"
+        className="bg-teal-700 border-2 border-solid border-zinc-900"
+      ></div>
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
@@ -39,7 +45,10 @@ function ImageGenerator(props) {
           data-prompt={props.prompt}
         />
       </div>
-      <div id="back-box-two" className="bg-blue-700 border-2 border-solid border-zinc-900"></div>
+      <div
+        id="back-box-two"
+        className="bg-blue-700 border-2 border-solid border-zinc-900"
+      ></div>
     </div>
   );
 }

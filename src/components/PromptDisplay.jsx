@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
+import GameContext from "./GameContext";
 
-const PromptDisplay = ({ prompt, correctWords, gameWon }) => {
-  const words = prompt.split(" ");
+const PromptDisplay = ({ correctWords, gameWon }) => {
+  const { slug } = useContext(GameContext);
+  const words = slug ? slug.split(" ") : [];
+
+  // map each word in the prompt to either the correct word or a blank
   const guessedPrompt = words
-    .map((word) =>
-      correctWords.includes(word) ? word : "___"
-    )
+    .map((word) => {
+      if (correctWords.includes(word)) {
+        return word;
+      } else {
+        return "___";
+      }
+    })
     .join(" ");
 
   const promptSlugDisplay = words
-    .map((word) =>
-      correctWords.includes(word) ? word : ""
-    )
-    .join(" ");
+    .map((word) => {
+      if (correctWords.includes(word)) {
+        return word;
+      } else {
+        return "______";
+      }
+    })
+    .join("-");
 
-  if (guessedPrompt === prompt) {
+  // check if all the words have been guessed correctly
+  if (correctWords.length === words.length) {
     gameWon();
   }
 
