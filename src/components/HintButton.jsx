@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import GameContext from "./GameContext";
 
-const slug = "rabbit";
-
-function HintButton() {
-  const [slugInput, setSlugInput] = useState(slug);
+export default function HintGenerator() {
+  const { slug } = useContext(GameContext);
   const [result, setResult] = useState();
 
   async function handleClick() {
@@ -13,7 +12,7 @@ function HintButton() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ slug: slugInput }),
+        body: JSON.stringify({ slug }),
       });
   
       const data = await response.json();
@@ -22,21 +21,19 @@ function HintButton() {
       }
   
       setResult(data.result);
-      setSlugInput("rabbit");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
   }
+
   return (
-    <div >
-      <main id="guessBtn" className="text-2xl border-2 border-solid border-zinc-900  flex justify-around p-px bg-gray-300 hover:bg-red-700 hover:text-white">
-        <button onClick={handleClick}>Hint</button>
+    <div>
+      <main>
+        <button onClick={handleClick}>Guess</button>
         <div>{result}</div>
       </main>
     </div>
   );
 }
-
-export default HintButton;
