@@ -1,61 +1,42 @@
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
 import SlugGenerator from "./components/SlugGenerator";
+import GameContext from "./components/GameContext";
+import HintButton from "./components/HintButton";
+
 
 const Game = () => {
-  const [prompt, setPrompt] = useState("");
   const [correctWords, setCorrectWords] = useState([]);
   const [difficulty, setDifficulty] = useState("");
+  const [slug, setSlug] = useState("");
 
-  const handleGeneratePrompt = (generatedWord) => {
-    setPrompt(generatedWord);
-    console.log(generatedWord);
-  };
-
-  const resetForm = () => {
-    document.getElementById("input-bar").reset();
-  };
-
-  const handleGuess = (guess) => {
-    // split the guess into separate words
-    const guessWords = guess.split(" ");
-    const newCorrectWords = [];
-
-    // check if each guess word matches a prompt word
-    guessWords.forEach((guessWord) => {
-      if (prompt.includes(guessWord) && !correctWords.includes(guessWord)) {
-        newCorrectWords.push(guessWord);
-      }
-    });
-
-    // update the list of correct words
-    setCorrectWords([...correctWords, ...newCorrectWords]);
-
-    if (newCorrectWords.length === prompt.split(" ").length) {
-      handleGameWon();
-    }
-  };
+  useEffect(() => {
+    setSlug(SlugGenerator(difficulty));
+  }, [difficulty]);
 
   const handleGameWon = () => {
     console.log("You won the game!");
-    // handle game won logic here
   };
 
   const handleSelectDifficulty = (selectedDifficulty) => {
     setDifficulty(selectedDifficulty);
   };
 
-  // const handleDifficultyChange = (event) => {
-  //   setDifficulty(event.target.value);
-  // };
+  const handleCorrectWords = (newCorrectWords) => {
+    setCorrectWords([...correctWords, ...newCorrectWords]);
+
+    if (newCorrectWords.length === slug.split("-").length) {
+      handleGameWon();
+    }
+  };
 
   return (
-    <div>
+    <GameContext.Provider value={{ slug, setSlug }}>
       <div>
         <CountdownTimer />
       </div>
@@ -65,30 +46,27 @@ const Game = () => {
       <div>
         <ImageGenerator
           difficulty={difficulty}
-          onGeneratePrompt={handleGeneratePrompt}
+          onGeneratePrompt={handleCorrectWords}
         />
       </div>
       <div>
-        <PromptDisplay
-          prompt={prompt}
-          correctWords={correctWords}
-          gameWon={handleGameWon}
-        />
+        <PromptDisplay correctWords={correctWords} gameWon={handleGameWon} />
       </div>
       <div>
         <GuessForm
-          prompt={prompt}
           correctWords={correctWords}
           setCorrectWords={setCorrectWords}
           handleGameWon={handleGameWon}
-          slug={SlugGenerator(difficulty)}
         />
+      </div>
+      <div>
+        <HintButton />
       </div>
       <div
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"
       ></div>
-    </div>
+    </GameContext.Provider>
   );
 };
 
