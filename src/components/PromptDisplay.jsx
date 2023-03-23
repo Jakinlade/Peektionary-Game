@@ -28,7 +28,7 @@ const PromptDisplay = ({ correctWords, gameWon }) => {
 
   // check if all the words have been guessed correctly
   if (correctWords.length === words.length) {
-    gameWon();
+    console.log("it's a match");
   }
 
   return (
