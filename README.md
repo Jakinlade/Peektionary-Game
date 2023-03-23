@@ -1,10 +1,10 @@
 # Peektionary
 
 ### Code repository:
-
+https://github.com/Jakinlade/Peektionary-Game
 
 ### Deployed application:
-
+https://peektionary.netlify.app/
 
 ## Description
 
@@ -14,6 +14,45 @@ Peektionary is an interactive image guessing game that utilizes openAI's DallE t
 ## App Screenshot
 
 ## Code example
+
+Difficulty mode selector buttons
+
+```js
+const DifficultySelector = ({ onSelectDifficulty }) => {
+  const handleDifficultyClick = (difficulty) => {
+    // setSelectedDifficulty(difficulty);
+    onSelectDifficulty(difficulty);
+    console.log("Selected difficulty:", difficulty);
+  };
+
+  return (
+    <div>
+      <div
+        id="select-level"
+        className="scale-5 text-xl border-2 border-solid border-zinc-900 flex justify-evenly bg-gray-300"
+      >
+        <h2>Select difficulty:</h2>
+        <button
+          onClick={() => handleDifficultyClick("easy")}
+          className="hover:font-extrabold"
+        >
+          Easy
+        </button>
+        <button
+          onClick={() => handleDifficultyClick("medium")}
+          className="hover:font-extrabold"
+        >
+          Medium
+        </button>
+        <button
+          onClick={() => handleDifficultyClick("hard")}
+          className="hover:font-extrabold"
+        >
+          Hard
+        </button>
+      </div>
+      <div
+```
 
 A function that uses a randomly generated slug as the prompt for the openAI image generator API
 
@@ -46,6 +85,20 @@ function ImageGenerator(props) {
 ![CSS badge](https://img.shields.io/badge/Language-CSS-blue)
 <br>
 ![Tailwind badge](https://img.shields.io/badge/Framework-Tailwind-purple)
+<br>
+![React badge](https://img.shields.io/badge/Library-React-blue)
+<br>
+![ChatGPT badge](https://img.shields.io/badge/API-ChatGPT-brightgreen)
+<br>
+![DallE badge](https://img.shields.io/badge/API-DallE-purple)
+<br>
+![NPM Package badge](https://img.shields.io/badge/NPM%20Package-Random%20Slug%20Generator-orange)
+
+##Contributors
+
+https://github.com/jaycee808
+https://github.com/markmos1991
+https://github.com/Jakinlade
 
 ## License
 ### MIT License
