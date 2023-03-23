@@ -8,6 +8,8 @@
 
 ## Description
 
+Peektionary is an interactive image guessing game that utilizes openAI's DallE technology. The app generates a random image based on a prompt word, which the user must guess. The game is designed to challenge the user's cognitive abilities and provide a unique experience for interacting with AI-generated images. The app is built using React and styled with Tailwind CSS, and utilizes a random slug generator npm module to generate the prompts for the DallE API. The user can play the game and see their score at the end. Peektionary's objective is to provide a fun and engaging way for users to interact with AI-generated images. In future updates, the app may include features such as using openAI's ChatGPT API for generating hints and difficulty levels that increase the number of words used in the prompt.
+
 
 ## App Screenshot
 
