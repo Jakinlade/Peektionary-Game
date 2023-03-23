@@ -66,6 +66,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
       <button type="submit" className="hover:font-extrabold">
         Submit
       </button>
+    
     </form>
   );
 };
