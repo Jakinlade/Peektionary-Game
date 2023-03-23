@@ -41,7 +41,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
       setGuess("");
       guessInput.current.focus();
       if (correctWords.length + 1 === lowerCaseSlug.split("-").length) {
-        alert("You Win!!");
+        handleGameWon();
       }
     } else {
       alert("Incorrect guess. Please try again.");

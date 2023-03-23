@@ -1,71 +1,128 @@
-# Getting Started with Create React App
+# Peektionary
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Code repository:
 
-## Available Scripts
+https://github.com/Jakinlade/Peektionary-Game
 
-In the project directory, you can run:
+### Deployed application:
 
-### `npm start`
+https://peektionary.netlify.app/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Description
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Peektionary is an interactive image guessing game that utilizes openAI's DallE technology. The app generates a random image based on a prompt word, which the user must guess. The game is designed to challenge the user's cognitive abilities and provide a unique experience for interacting with AI-generated images. The app is built using React and styled with Tailwind CSS, and utilizes a random slug generator npm module to generate the prompts for the DallE API. The user can play the game and see their score at the end. Peektionary's objective is to provide a fun and engaging way for users to interact with AI-generated images. In future updates, the app may include features such as using openAI's ChatGPT API for generating hints and difficulty levels that increase the number of words used in the prompt.
 
-### `npm test`
+## App Screenshot
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![screenshot of website](./src/images/Peektionary.png)
 
-### `npm run build`
+## Code example
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Difficulty mode selector buttons
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
+const DifficultySelector = ({ onSelectDifficulty }) => {
+  const handleDifficultyClick = (difficulty) => {
+    // setSelectedDifficulty(difficulty);
+    onSelectDifficulty(difficulty);
+    console.log("Selected difficulty:", difficulty);
+  };
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  return (
+    <div>
+      <div
+        id="select-level"
+        className="scale-5 text-xl border-2 border-solid border-zinc-900 flex justify-evenly bg-gray-300"
+      >
+        <h2>Select difficulty:</h2>
+        <button
+          onClick={() => handleDifficultyClick("easy")}
+          className="hover:font-extrabold"
+        >
+          Easy
+        </button>
+        <button
+          onClick={() => handleDifficultyClick("medium")}
+          className="hover:font-extrabold"
+        >
+          Medium
+        </button>
+        <button
+          onClick={() => handleDifficultyClick("hard")}
+          className="hover:font-extrabold"
+        >
+          Hard
+        </button>
+      </div>
+      <div
+```
 
-### `npm run eject`
+A function that uses a randomly generated slug as the prompt for the openAI image generator API
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```js
+function ImageGenerator(props) {
+  const { slug } = useContext(GameContext); // Get the slug from the GameContext
+  const configuration = new Configuration({
+    apiKey: apiKey,
+  });
+  const openai = new OpenAIApi(configuration);
+  const [result, setResult] = useState("");
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  const generateImage = async (slug) => {
+    console.log(slug);
+    const res = await openai.createImage({
+      prompt: slug,
+      n: 1,
+      size: "512x512",
+    });
+    setResult(res.data.data[0].url);
+  };
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Technologies used
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![JavaScript Badge](https://img.shields.io/badge/Language-JavaScript-yellow)
+<br>
+![HTML Badge](https://img.shields.io/badge/Language-HTML-red)
+<br>
+![CSS badge](https://img.shields.io/badge/Language-CSS-blue)
+<br>
+![Tailwind badge](https://img.shields.io/badge/Framework-Tailwind-purple)
+<br>
+![React badge](https://img.shields.io/badge/Library-React-blue)
+<br>
+![ChatGPT badge](https://img.shields.io/badge/API-ChatGPT-brightgreen)
+<br>
+![DallE badge](https://img.shields.io/badge/API-DallE-purple)
+<br>
+![NPM Package badge](https://img.shields.io/badge/NPM%20Package-Random%20Slug%20Generator-orange)
 
-## Learn More
+##Contributors
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+https://github.com/jaycee808
+https://github.com/markmos1991
+https://github.com/Jakinlade
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
+### MIT License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Copyright (c) 2023
 
-### Analyzing the Bundle Size
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Peektionary-Game
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
