@@ -11,7 +11,7 @@ const PromptDisplay = ({ correctWords, gameWon }) => {
       if (correctWords.includes(word)) {
         return word;
       } else {
-        return "___";
+        return "";
       }
     })
     .join(" ");
@@ -21,15 +21,15 @@ const PromptDisplay = ({ correctWords, gameWon }) => {
       if (correctWords.includes(word)) {
         return word;
       } else {
-        return "______";
+        return "";
       }
     })
     .join("-");
 
   // check if all the words have been guessed correctly
-  if (correctWords.length === words.length) {
-    console.log("it's a match");
-  }
+  // if (correctWords.length === words.length) {
+  //   console.log("it's a match");
+  // }
 
   return (
     <div>

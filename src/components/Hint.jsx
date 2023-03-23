@@ -1,55 +1,37 @@
 import { Configuration, OpenAIApi } from "openai";
+import apiKey from "./API";
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: apiKey,
 });
 const openai = new OpenAIApi(configuration);
 
-export default async function (req, res) {
+export default async function getHint(slug) {
   if (!configuration.apiKey) {
-    res.status(500).json({
-      error: {
-        message: "OpenAI API key not configured, please follow instructions in README.md",
-      }
-    });
-    return;
+    throw new Error(
+      "OpenAI API key not configured, please follow instructions in README.md"
+    );
   }
 
-  const slug = req.body.slug || '';
-  if (slug.trim().length === 0) {
-    res.status(400).json({
-      error: {
-        message: "slug not specified",
-      }
-    });
-    return;
-  }
+  // if (slug.trim().length === 0) {
+  //   throw new Error("slug not specified");
+  // }
 
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(slug),
+      prompt: `Give a hint about what ${slug} is without saying the words ${slug}`,
       temperature: 0.6,
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
-  } catch(error) {
+    return completion.data.choices[0].text;
+  } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
+      throw new Error(error.response.data);
     } else {
       console.error(`Error with OpenAI API request: ${error.message}`);
-      res.status(500).json({
-        error: {
-          message: 'An error occurred during your request.',
-        }
-      });
+      throw new Error("An error occurred during your request.");
     }
   }
-}
-
-function generatePrompt(slug) {
-  const capitalizedSlug =
-    slug[0].toUpperCase() + slug.slice(1).toLowerCase();
-  return `give me a clue for  ${capitalizedSlug} without mentioning ${capitalizedSlug} in the clue`;
 }
