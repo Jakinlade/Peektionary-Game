@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
 
 const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
-  const { prompt, slug } = useContext(GameContext);
+  const { slug } = useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
 
@@ -10,27 +10,27 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
     setGuess(event.target.value);
   };
 
-  const handleGuess = (guess) => {
-    const guessWords = guess.split(" ");
-    const newCorrectWords = [];
+  // const handleGuess = (guess) => {
+  //   const guessWords = guess.split(" ");
+  //   const newCorrectWords = [];
 
-    guessWords.forEach((guessWord) => {
-      if (prompt.includes(guessWord) && !correctWords.includes(guessWord)) {
-        newCorrectWords.push(guessWord);
-      }
-    });
+  //   guessWords.forEach((guessWord) => {
+  //     if (prompt.includes(guessWord) && !correctWords.includes(guessWord)) {
+  //       newCorrectWords.push(guessWord);
+  //     }
+  //   });
 
-    // Check if the guess matches the slug
-    if (guessWords.includes(slug)) {
-      newCorrectWords.push(slug);
-    }
+  //   // Check if the guess matches the slug
+  //   if (guessWords.includes(slug)) {
+  //     newCorrectWords.push(slug);
+  //   }
 
-    setCorrectWords([...correctWords, ...newCorrectWords]);
+  //   setCorrectWords([...correctWords, ...newCorrectWords]);
 
-    if (newCorrectWords.length === prompt.split(" ").length + 1) {
-      handleGameWon();
-    }
-  };
+  //   if (newCorrectWords.length === prompt.split(" ").length + 1) {
+  //     handleGameWon();
+  //   }
+  // };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

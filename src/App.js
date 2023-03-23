@@ -9,7 +9,6 @@ import SlugGenerator from "./components/SlugGenerator";
 import GameContext from "./components/GameContext";
 import HintButton from "./components/HintButton";
 
-
 const Game = () => {
   const [correctWords, setCorrectWords] = useState([]);
   const [difficulty, setDifficulty] = useState("");
@@ -31,7 +30,7 @@ const Game = () => {
     setCorrectWords([...correctWords, ...newCorrectWords]);
 
     if (newCorrectWords.length === slug.split("-").length) {
-      handleGameWon();
+      alert("You Win!!");
     }
   };
 
@@ -50,7 +49,7 @@ const Game = () => {
         />
       </div>
       <div>
-        <PromptDisplay correctWords={correctWords} gameWon={handleGameWon} />
+        <PromptDisplay correctWords={correctWords} />
       </div>
       <div>
         <GuessForm
