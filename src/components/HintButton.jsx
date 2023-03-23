@@ -34,7 +34,7 @@ export default function HintGenerator() {
   return (
     <div>
       <main>
-        <button onClick={handleClick}>Guess</button>
+        <button onClick={handleClick}>Hint!</button>
         <div>{result}</div>
       </main>
     </div>

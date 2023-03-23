@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
 const DifficultySelector = ({ onSelectDifficulty }) => {
-  const [selectedDifficulty, setSelectedDifficulty] = useState("easy");
-
   const handleDifficultyClick = (difficulty) => {
     // setSelectedDifficulty(difficulty);
     onSelectDifficulty(difficulty);
@@ -35,8 +33,10 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
           Hard
         </button>
       </div>
-        <div id="back-box-one" className="bg-red-700 border-2 border-solid border-zinc-900">
-        </div>
+      <div
+        id="back-box-one"
+        className="bg-red-700 border-2 border-solid border-zinc-900"
+      ></div>
     </div>
   );
 };

@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import GameContext from "./GameContext";
 
-const slug = "rabbit";
-
 export default function Home() {
-  const [slugInput, setSlugInput] = useState(slug);
+  const { slug } = useContext(GameContext);
   const [result, setResult] = useState();
 
   async function handleClick() {
@@ -14,17 +12,19 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ slug: slugInput }),
+        body: JSON.stringify({ slug }),
       });
-  
+
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        throw (
+          data.error ||
+          new Error(`Request failed with status ${response.status}`)
+        );
       }
-  
+
       setResult(data.result);
-      setSlugInput("rabbit");
-    } catch(error) {
+    } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
