@@ -58,13 +58,13 @@ const Game = () => {
           handleGameWon={handleGameWon}
         />
       </div>
-      <div>
-      <HintButton slug={slug} />
-      </div>
       <div
         id="back-box-three"
         className="bg-rose-700 border-2 border-solid border-zinc-900"
       ></div>
+            <div>
+      <HintButton slug={slug} />
+      </div>
     </GameContext.Provider>
   );
 };

@@ -15,10 +15,10 @@ export default function HintButton({ slug }) {
   }
 
   return (
-    <div>
+    <div id="hint" className="text-base border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300">
       <main>
-        <button onClick={handleClick}>Hint!</button>
-        <div>{result}</div>
+        <button onClick={handleClick} className="text-xl border-2 border-solid border-zinc-900 p-px bg-rose-700 text-white hover:bg-blue-700">Hint!</button>
+        <div id="hint-result" className="text-base">{result}</div>
       </main>
     </div>
   );
