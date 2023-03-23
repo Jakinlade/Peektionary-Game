@@ -19,7 +19,7 @@ const Game = () => {
   }, [difficulty]);
 
   const handleGameWon = () => {
-    // console.log("You won the game!");
+    console.log("You won the game!");
   };
 
   const handleSelectDifficulty = (selectedDifficulty) => {
@@ -59,7 +59,7 @@ const Game = () => {
         />
       </div>
       <div>
-        <HintButton />
+      <HintButton slug={slug} />
       </div>
       <div
         id="back-box-three"

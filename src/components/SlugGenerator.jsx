@@ -8,7 +8,7 @@ function SlugGenerator(difficulty) {
       partsOfSpeech: ["noun"],
       categories: {
         adjective: [],
-        noun: ["animals", "thing"],
+        noun: ["animals", "food"],
       },
     });
   } else if (difficulty === "medium") {
@@ -17,7 +17,7 @@ function SlugGenerator(difficulty) {
       partsOfSpeech: ["adjective", "noun"],
       categories: {
         adjective: ["color"],
-        noun: ["animals", "thing", "transportation"],
+        noun: ["animals", "food", "transportation"],
       },
     });
   } else {
@@ -25,15 +25,8 @@ function SlugGenerator(difficulty) {
       format: "title",
       partsOfSpeech: ["adjective", "adjective", "noun"],
       categories: {
-        adjective: ["color", "size", "shape"],
-        noun: [
-          "animals",
-          "thing",
-          "transportation",
-          "people",
-          "profession",
-          "technology",
-        ],
+        adjective: ["color", "shape", "personality"],
+        noun: ["animals", "food", "transportation", "people"],
       },
     });
   }

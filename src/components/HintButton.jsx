@@ -1,31 +1,14 @@
-import { useContext, useState } from "react";
-import GameContext from "./GameContext";
+import { useState } from "react";
+import getHint from "./Hint";
 
-export default function HintGenerator() {
-  const { slug } = useContext(GameContext);
-  const [result, setResult] = useState();
+export default function HintButton({ slug }) {
+  const [result, setResult] = useState("");
 
   async function handleClick() {
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ slug }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw (
-          data.error ||
-          new Error(`Request failed with status ${response.status}`)
-        );
-      }
-
-      setResult(data.result);
+      const hint = await getHint(slug);
+      setResult(hint);
     } catch (error) {
-      // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
