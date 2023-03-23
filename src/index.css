@@ -166,7 +166,8 @@ code {
     height: 3rem;
   }
 
-  #generateBtn {
+  #generateBtn,
+  #hint {
     width: 25rem;
   }
   
@@ -194,7 +195,8 @@ code {
     height: 3rem;
   }
 
-  #generateBtn {
+  #generateBtn,
+  #hint {
     width: 22rem;
   }
   
