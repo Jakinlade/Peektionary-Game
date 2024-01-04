@@ -94,7 +94,7 @@ function ImageGenerator(props) {
 <br>
 ![NPM Package badge](https://img.shields.io/badge/NPM%20Package-Random%20Slug%20Generator-orange)
 
-##Contributors
+## Contributors
 
 https://github.com/jaycee808
 https://github.com/markmos1991
