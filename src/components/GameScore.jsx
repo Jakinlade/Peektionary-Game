@@ -1,37 +1,39 @@
-// A React component to display and update the user's score
-
+// Importing React and its hooks
 import React, { useState, useEffect } from "react";
 
-// Props:
-// - initialScore: the starting score for the user
-// - hintPenalty: the amount of points to deduct for each hint used
-// - countdownInterval: the interval (in milliseconds) for the score to countdown
-
+/**
+ * Score - A React functional component that displays and manages the game score.
+ * 
+ * Props:
+ * - initialScore: The initial score assigned to the user at the start of the game.
+ * - hintPenalty: The penalty in score points deducted each time the user uses a hint.
+ * - countdownInterval: The time interval (in milliseconds) at which the score decreases automatically.
+ */
 const Score = ({ initialScore, hintPenalty, countdownInterval }) => {
-  // Initialize score state with the initial score
+  // State 'score' holds the current score. It's initialized with 'initialScore'.
   const [score, setScore] = useState(initialScore);
 
-  // Set up an effect to update the score every interval
+  // useEffect hook to handle the automatic decrement of the score over time.
   useEffect(() => {
-    // Set up a timer that decrements the score by 1 every interval
+    // Creating a timer that updates the score by decrementing it at each interval.
     const timer = setInterval(() => {
       setScore((prevScore) => prevScore - 1);
     }, countdownInterval);
 
-    // Clean up the timer when the component unmounts
+    // Cleanup function to clear the interval timer when the component unmounts.
     return () => clearInterval(timer);
-  }, [countdownInterval]);
+  }, [countdownInterval]); // The effect depends on 'countdownInterval'.
 
-  // A handler function to deduct points for using a hint
+  // Function to handle the score deduction when a hint is used.
   const handleHint = () => {
     setScore((prevScore) => prevScore - hintPenalty);
   };
 
-  // Render the score and a button to use a hint
+  // Rendering the score display and the hint button.
   return (
     <div>
-      <h2>Score: {score}</h2>
-      <button onClick={handleHint}>Use Hint (-{hintPenalty} points)</button>
+      <h2>Score: {score}</h2> {/* Displaying the current score */}
+      <button onClick={handleHint}>Use Hint (-{hintPenalty} points)</button> {/* Button to use a hint, showing the penalty */}
     </div>
   );
 };
