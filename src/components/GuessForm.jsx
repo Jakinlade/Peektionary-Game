@@ -23,7 +23,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
     // Process each guessed word
     lowerCaseGuessWords.forEach((word) => {
       if (lowerCaseSlugWords.includes(word) && !correctWords.includes(word)) {
-        addWordInOrder(word); // Add correctly guessed word in order
+        addWordInOrder(word, lowerCaseSlugWords); // Add correctly guessed word in order, passing lowerCaseSlugWords
       }
     });
 
@@ -38,7 +38,7 @@ const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
   };
 
   // Function to add correctly guessed word in order
-  const addWordInOrder = (word) => {
+  const addWordInOrder = (word, lowerCaseSlugWords) => {
     const newCorrectWords = [...correctWords];
     const wordIndex = lowerCaseSlugWords.indexOf(word);
     newCorrectWords[wordIndex] = word; // Insert the word at the correct position
