@@ -17,16 +17,25 @@ function ImageGenerator(props) {
   // State to store the generated image URL
   const [result, setResult] = useState("");
 
-  // Async function to generate an image using OpenAI's DALL-E model
+  // Function to generate an image based on the slug
   const generateImage = async (slug) => {
     console.log(slug); // Log the slug for debugging purposes
-    // Request to create an image using the OpenAI API
-    const res = await openai.createImage({
-      prompt: slug, // The prompt for image generation
-      n: 1,         // Number of images to generate
-      size: "512x512", // Size of the generated image
-    });
-    setResult(res.data.data[0].url); // Update the result state with the image URL
+    try {
+      // Making the API call to OpenAI to generate the image
+      // Using DALL-E 3 model with supported image size
+      const res = await openai.createImage({
+        model: "dall-e-3", // Specifying to use DALL-E 3 model
+        prompt: slug, // The slug acts as the prompt for the image generation
+        n: 1, // Number of images to generate (currently DALL-E 3 supports only 1)
+        size: "1024x1024", // Supported image size for DALL-E 3
+      });
+      // Setting the result to the generated image URL
+      setResult(res.data.data[0].url);
+    } catch (error) {
+      // Logging any errors that occur during the API call
+      console.error("Error generating image:", error);
+    }
+
   };
 
   // Render the ImageGenerator component
@@ -40,7 +49,9 @@ function ImageGenerator(props) {
       >
         Generate
       </button>
-      {/* Container to display the generated image */}
+
+      {/* Container to display the generated images */}
+
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
