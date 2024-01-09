@@ -35,7 +35,6 @@ function ImageGenerator(props) {
       // Logging any errors that occur during the API call
       console.error("Error generating image:", error);
     }
-
   };
 
   // Render the ImageGenerator component
@@ -49,9 +48,7 @@ function ImageGenerator(props) {
       >
         Generate
       </button>
-
-      {/* Container to display the generated images */}
-
+      {/* Container to display the generated image */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
@@ -60,7 +57,7 @@ function ImageGenerator(props) {
           className="object-fill aspect-auto"
           src={result}
           alt="Generated result"
-          data-prompt={props.prompt}
+          data-prompt={slug}
         />
       </div>
       {/* Additional layout or decorative element */}
