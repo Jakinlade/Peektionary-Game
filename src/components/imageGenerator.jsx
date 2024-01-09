@@ -3,17 +3,23 @@ import { useState, useContext } from "react";
 import apiKey from "./API";
 import GameContext from "./GameContext";
 
-function ImageGenerator() {
+// ImageGenerator component generates an image based on a given slug
+function ImageGenerator(props) {
+  // Accessing the current slug from GameContext
   const { slug } = useContext(GameContext);
+
+  // Configuring OpenAI API with the provided API key
   const configuration = new Configuration({
     apiKey: apiKey,
   });
   const openai = new OpenAIApi(configuration);
+
+  // State to store the generated image URL
   const [result, setResult] = useState("");
 
   // Function to generate an image based on the slug
   const generateImage = async (slug) => {
-    console.log(slug);
+    console.log(slug); // Log the slug for debugging purposes
     try {
       // Making the API call to OpenAI to generate the image
       // Using DALL-E 3 model with supported image size
@@ -31,15 +37,18 @@ function ImageGenerator() {
     }
   };
 
+  // Render the ImageGenerator component
   return (
     <div>
+      {/* Button to trigger image generation */}
       <button
         id="generateBtn"
-        onClick={() => generateImage(slug)}
+        onClick={() => generateImage(slug)} // Using the slug from GameContext for image generation
         className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
       >
-        generate
+        Generate
       </button>
+      {/* Container to display the generated image */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
@@ -51,6 +60,7 @@ function ImageGenerator() {
           data-prompt={slug}
         />
       </div>
+      {/* Additional layout or decorative element */}
       <div
         id="back-box-two"
         className="bg-blue-700 border-2 border-solid border-zinc-900"
