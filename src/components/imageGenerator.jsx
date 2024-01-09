@@ -48,7 +48,7 @@ function ImageGenerator(props) {
       >
         Generate
       </button>
-      {/* Container to display the generated image */}
+      {/* Container to display the generated images */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
