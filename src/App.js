@@ -20,16 +20,40 @@ const Game = () => {
   const [slug, setSlug] = useState("");
 
   // State for the game timer
-  const [timer, setTimer] = useState(60); // Timer initialized to 60 seconds
+  const [timer, setTimer] = useState(null); // Timer initialized to null
+
+  // State to track if the game has started
+  const [gameStarted, setGameStarted] = useState(false);
 
   // Effect to generate a new slug whenever the difficulty changes
   useEffect(() => {
     setSlug(SlugGenerator(difficulty));
-  }, [difficulty])
+  }, [difficulty]);
+
+  // Effect for the countdown timer
+  useEffect(() => {
+    let interval;
+    if (gameStarted && timer > 0) {
+      interval = setInterval(() => {
+        setTimer(timer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      handleGameLost();
+    }
+
+    return () => clearInterval(interval);
+  }, [gameStarted, timer]);
+
+  // Handler for when the game is lost
+  const handleGameLost = () => {
+    alert("Game Over! Time's up.");
+    setGameStarted(false);
+  };
 
   // Handler for when the game is won
   const handleGameWon = () => {
     alert("You won the game!");
+    setGameStarted(false);
   };
 
   // Handler for changing the difficulty level
@@ -41,19 +65,20 @@ const Game = () => {
   const handleCorrectWords = (newCorrectWords) => {
     setCorrectWords([...correctWords, ...newCorrectWords]);
     if (newCorrectWords.length === slug.split("-").length) {
-      alert("You Win!!");
+      handleGameWon();
     }
+  };
+
+  // Function to start the game and timer
+  const startGame = () => {
+    setGameStarted(true);
+    setTimer(60); // Start the timer with 60 seconds
   };
 
   // Function to reduce the timer when a hint is used
   const reduceTimerForHint = () => {
-    console.log("Before timer reduction:", timer); // Log the current timer value before reduction
-    setTimer((prevTimer) => {
-        const newTimerValue = Math.max(prevTimer - 10, 0);
-        console.log("After timer reduction, new value:", newTimerValue); // Log the new timer value
-        return newTimerValue;
-    });
-};
+    setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
+  };
 
   return (
     <GameContext.Provider value={{ slug, setSlug }}>
@@ -88,6 +113,7 @@ const Game = () => {
         {/* Hint Button component, reduces timer when used */}
         <HintButton slug={slug} onUseHint={reduceTimerForHint} />
       </div>
+      {!gameStarted && <button onClick={startGame}>Start Game</button>}
     </GameContext.Provider>
   );
 };
