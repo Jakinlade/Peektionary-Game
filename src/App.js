@@ -47,8 +47,13 @@ const Game = () => {
 
   // Function to reduce the timer when a hint is used
   const reduceTimerForHint = () => {
-    setTimer((prevTimer) => Math.max(prevTimer - 5, 0)); // Reduces timer by 5 seconds, prevents negative values
-  };
+    console.log("Before timer reduction:", timer); // Log the current timer value before reduction
+    setTimer((prevTimer) => {
+        const newTimerValue = Math.max(prevTimer - 10, 0);
+        console.log("After timer reduction, new value:", newTimerValue); // Log the new timer value
+        return newTimerValue;
+    });
+};
 
   return (
     <GameContext.Provider value={{ slug, setSlug }}>

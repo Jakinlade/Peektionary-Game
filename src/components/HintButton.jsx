@@ -2,7 +2,7 @@ import { useState } from "react";
 import getHint from "./Hint";
 
 // HintButton component is responsible for handling hint requests and displaying the results
-export default function HintButton({ slug }) {
+export default function HintButton({ slug, onUseHint }) {
   // State 'result' to store the hint received from the getHint function
   const [result, setResult] = useState("");
 
@@ -13,6 +13,8 @@ export default function HintButton({ slug }) {
       const hint = await getHint(slug);
       // Updating the 'result' state with the received hint
       setResult(hint);
+      // Call the onUseHint function to reduce the timer
+      onUseHint();
     } catch (error) {
       // Logging any errors to the console and displaying them to the user
       console.error(error);
