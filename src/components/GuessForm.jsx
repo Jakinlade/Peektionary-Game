@@ -1,74 +1,59 @@
 import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
 
-// GuessForm component for handling user guesses and displaying correct guesses
-const GuessForm = ({ correctWords, setCorrectWords, handleGameWon }) => {
-  const { slug } = useContext(GameContext); // Accessing the slug from the GameContext
-  const [guess, setGuess] = useState(""); // State for the user's guess input
-  const [feedback, setFeedback] = useState(""); // State for providing feedback to the user
-  const guessInput = useRef(null); // Ref for the guess input field
+const GuessForm = ({ correctWords = [], setCorrectWords, handleGameWon }) => {
+  // Access the current game's slug from the context
+  const { slug } = useContext(GameContext);
+  const [guess, setGuess] = useState(""); // State to hold the user's current guess
+  const [feedback, setFeedback] = useState(""); // State for feedback to the user
+  const guessInput = useRef(null); // Reference to the guess input element for focus management
 
-  // Handler for changes in the guess input field
+  // Update guess state and reset feedback on input change
   const handleInputChange = (event) => {
-    setGuess(event.target.value); // Update the guess state with the new input
-    setFeedback(""); // Reset feedback when user types a new guess
+    setGuess(event.target.value);
+    setFeedback("");
   };
 
-  // Handler for form submission
+  // Handle guess submission
   const handleFormSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    const lowerCaseSlugWords = slug.toLowerCase().split("-"); // Split the slug into lowercase words
-    const lowerCaseGuessWords = guess.trim().toLowerCase().split(" "); // Split the guess into lowercase words
+    event.preventDefault();
+    const lowerCaseSlugWords = slug.toLowerCase().split("-");
+    const lowerCaseGuessWords = guess.trim().toLowerCase().split(" ");
 
-    // Process each guessed word
     lowerCaseGuessWords.forEach((word) => {
       if (lowerCaseSlugWords.includes(word) && !correctWords.includes(word)) {
-        addWordInOrder(word, lowerCaseSlugWords); // Add correctly guessed word in order, passing lowerCaseSlugWords
+        addWordInOrder(word, lowerCaseSlugWords);
       }
     });
 
-    // Clear the input field and refocus
-    setGuess("");
-    guessInput.current.focus();
+    setGuess(""); // Clear guess input
+    guessInput.current.focus(); // Refocus on input field
 
-    // Check if all words are guessed correctly
     if (correctWords.length === lowerCaseSlugWords.length) {
-      handleGameWon(); // Trigger game won logic
+      handleGameWon(); // Trigger game win condition
     }
   };
 
-  // Function to add correctly guessed word in order
+  // Function to add a correctly guessed word in its corresponding order
   const addWordInOrder = (word, lowerCaseSlugWords) => {
     const newCorrectWords = [...correctWords];
     const wordIndex = lowerCaseSlugWords.indexOf(word);
-    newCorrectWords[wordIndex] = word; // Insert the word at the correct position
-    setCorrectWords(newCorrectWords); // Update the correctWords state
+    newCorrectWords[wordIndex] = word; // Place word in the correct position
+    setCorrectWords(newCorrectWords);
   };
 
-  // Render the guess form and display of correct words
   return (
     <div>
-      <form
-        id="input-bar"
-        onSubmit={handleFormSubmit}
-        className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300"
-      >
+      <form onSubmit={handleFormSubmit} className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300">
         <label>
           Guess:
-          <input
-            type="text"
-            value={guess}
-            onChange={handleInputChange}
-            ref={guessInput}
-          />
+          <input type="text" value={guess} onChange={handleInputChange} ref={guessInput} />
         </label>
-        <button type="submit" className="hover:font-extrabold">
-          Submit
-        </button>
-        {feedback && <div className="feedback">{feedback}</div>} {/* Display feedback */}
+        <button type="submit" className="hover:font-extrabold">Submit</button>
+        {feedback && <div className="feedback">{feedback}</div>}
       </form>
       <div>
-        {/* Display correctly guessed words in order */}
+        {/* Safely map over correctWords with default to empty array if undefined */}
         {correctWords.map((word, index) => (
           <span key={index}>{word ? word + ' ' : '_ '}</span>
         ))}

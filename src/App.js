@@ -1,119 +1,81 @@
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
-import React, { useState, useEffect } from "react";
 import ImageGenerator from "./components/imageGenerator";
 import GuessForm from "./components/GuessForm";
 import DifficultySelector from "./components/DifficultySelector";
 import PromptDisplay from "./components/PromptDisplay";
-import SlugGenerator from "./components/SlugGenerator";
 import GameContext from "./components/GameContext";
 import HintButton from "./components/HintButton";
+import SlugGenerator from "./components/SlugGenerator";
+import EndGameModal from "./components/EndGameModal";
 
 const Game = () => {
-  // State for tracking the correct words guessed by the user
+  // State declarations
   const [correctWords, setCorrectWords] = useState([]);
-
-  // State for the selected difficulty level
   const [difficulty, setDifficulty] = useState("");
-
-  // State for the current slug (prompt sentence for the image)
   const [slug, setSlug] = useState("");
-
-  // State for the game timer
-  const [timer, setTimer] = useState(null); // Timer initialized to null
-
-  // State to track if the game has started
+  const [timer, setTimer] = useState(100);
   const [gameStarted, setGameStarted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [score, setScore] = useState(0);
 
-  // Effect to generate a new slug whenever the difficulty changes
-  useEffect(() => {
-    setSlug(SlugGenerator(difficulty));
-  }, [difficulty]);
-
-  // Effect for the countdown timer
-  useEffect(() => {
-    let interval;
-    if (gameStarted && timer > 0) {
-      interval = setInterval(() => {
-        setTimer(timer - 1);
-      }, 1000);
-    } else if (timer === 0) {
-      handleGameLost();
-    }
-
-    return () => clearInterval(interval);
-  }, [gameStarted, timer]);
-
-  // Handler for when the game is lost
-  const handleGameLost = () => {
-    alert("Game Over! Time's up.");
-    setGameStarted(false);
-  };
-
-  // Handler for when the game is won
-  const handleGameWon = () => {
-    alert("You won the game!");
-    setGameStarted(false);
-  };
-
-  // Handler for changing the difficulty level
-  const handleSelectDifficulty = (selectedDifficulty) => {
-    setDifficulty(selectedDifficulty);
-  };
-
-  // Handler for updating the correct words guessed by the user
-  const handleCorrectWords = (newCorrectWords) => {
-    setCorrectWords([...correctWords, ...newCorrectWords]);
-    if (newCorrectWords.length === slug.split("-").length) {
-      handleGameWon();
-    }
-  };
-
-  // Function to start the game and timer
-  const startGame = () => {
+  // Function to start the game and initialize states
+  const startGame = useCallback(() => {
     setGameStarted(true);
-    setTimer(60); // Start the timer with 60 seconds
-  };
+    setTimer(100); // Reset timer to initial value
+    setShowModal(false); // Ensure modal is not shown at the start
+    // Note: Consider setting initial slug or difficulty if needed here
+  }, []);
 
-  // Function to reduce the timer when a hint is used
-  const reduceTimerForHint = () => {
+  // Function to handle the game ending
+  const handleGameEnd = useCallback((won = false) => {
+    setGameStarted(false);
+    setShowModal(true);
+    const difficultyMultiplier = difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
+    setScore(timer * difficultyMultiplier);
+    // Optionally, perform actions based on whether the game was won or lost
+  }, [difficulty, timer]);
+
+  // Adjust timer for hint usage
+  const handleUseHint = useCallback(() => {
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
-  };
+  }, []);
 
+  // Slug generation based on game start and difficulty selection
+  useEffect(() => {
+    if (gameStarted) {
+      const generatedSlug = SlugGenerator(difficulty);
+      setSlug(generatedSlug);
+      // Debugging or error handling for slug generation can be added here
+    }
+  }, [gameStarted, difficulty]);
+
+  // Handle game loss due to timer running out
+  useEffect(() => {
+    if (timer === 0) handleGameEnd(false);
+  }, [timer, handleGameEnd]);
+
+  // Check for game win condition
+  useEffect(() => {
+    const slugWords = slug.split(' ');
+    if (gameStarted && correctWords.length === slugWords.length && correctWords.every(word => slugWords.includes(word))) {
+      handleGameEnd(true); // Game won by guessing all correct words
+    }
+  }, [correctWords, slug, gameStarted, handleGameEnd]);
+
+  // Main component rendering
   return (
     <GameContext.Provider value={{ slug, setSlug }}>
-      <div>
-        {/* Countdown Timer component, showing the remaining time */}
-        <CountdownTimer timeLeft={timer} />
-      </div>
-      <div>
-        {/* Difficulty Selector component */}
-        <DifficultySelector onSelectDifficulty={handleSelectDifficulty} />
-      </div>
-      <div>
-        {/* Image Generator component */}
-        <ImageGenerator
-          difficulty={difficulty}
-          onGeneratePrompt={handleCorrectWords}
-        />
-      </div>
-      <div>
-        {/* Prompt Display component showing the correct words guessed */}
-        <PromptDisplay correctWords={correctWords} />
-      </div>
-      <div>
-        {/* Guess Form component for user to input their guesses */}
-        <GuessForm
-          correctWords={correctWords}
-          setCorrectWords={setCorrectWords}
-          handleGameWon={handleGameWon}
-        />
-      </div>
-      <div>
-        {/* Hint Button component, reduces timer when used */}
-        <HintButton slug={slug} onUseHint={reduceTimerForHint} />
-      </div>
+      <DifficultySelector onSelectDifficulty={setDifficulty} />
+      <ImageGenerator difficulty={difficulty} onGeneratePrompt={setCorrectWords} />
+      <PromptDisplay correctWords={correctWords} />
+      <GuessForm correctWords={correctWords} setCorrectWords={setCorrectWords} />
+      <HintButton slug={slug} onUseHint={handleUseHint} />
+      <CountdownTimer gameStarted={gameStarted} timeLeft={timer} setTimeLeft={setTimer} onUseHint={handleUseHint} />
+      <EndGameModal showModal={showModal} setShowModal={setShowModal} score={score} />
       {!gameStarted && <button onClick={startGame}>Start Game</button>}
+      {/* Future components or placeholders */}
     </GameContext.Provider>
   );
 };

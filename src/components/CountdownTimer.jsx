@@ -1,34 +1,27 @@
 import React, { useEffect } from "react";
 
-function CountdownTimer({ gameStarted, setGameStarted, setTimeLeft, timeLeft }) {
+const CountdownTimer = ({ gameStarted, setGameStarted, timeLeft, setTimeLeft, onUseHint }) => {
   useEffect(() => {
-    let interval;
-    if (gameStarted && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      clearInterval(interval);
-      setGameStarted(false);
-      // Placeholder for modal pop-up
-      // TODO: Implement showScoreModal() to display the player's score
-      // showScoreModal();
-    }
-
+    if (!gameStarted) return;
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        setGameStarted(false); // Handle game end due to timer running out
+      }
+    }, 1000);
     return () => clearInterval(interval);
-  }, [gameStarted, timeLeft, setGameStarted, setTimeLeft]);
+  }, [gameStarted, timeLeft, setTimeLeft, setGameStarted]);
 
-  // Expose the function to reduce time for a hint
-  const reduceTimeForHint = () => {
-    setTimeLeft((prevTime) => Math.max(prevTime - 10, 0));
-  };
+  // Expose the reduceTimerForHint function via onUseHint prop
+  useEffect(() => {
+    onUseHint(() => reduceTimerForHint());
+  }, [onUseHint]); // Ensure this runs only when onUseHint changes
 
-  // Render the timer
-  return (
-    <div className="countdown-timer">
-      Time left: {timeLeft}
-    </div>
-  );
-}
+  // Function to reduce timer for hint
+  const reduceTimerForHint = () => setTimeLeft((prevTime) => Math.max(prevTime - 10, 0));
+
+  return <div>Time left: {timeLeft}</div>;
+};
 
 export default CountdownTimer;
