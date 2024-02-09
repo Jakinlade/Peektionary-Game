@@ -1,10 +1,22 @@
-// Import React library
-import React from "react";
+import React, { createContext, useState, useCallback } from "react";
 
-// Create a context for managing the game's 'slug' state across the app
-const GameContext = React.createContext({
-  slug: "", // Default value for 'slug'
-});
+const GameContext = createContext();
 
-// Export GameContext for use in other components
+export const GameProvider = ({ children }) => {
+  const [slug, setSlug] = useState("");
+  const [difficulty, setDifficulty] = useState("easy"); // Default difficulty
+
+  // Function to generate and set the slug based on current difficulty
+  const generateSlug = useCallback(() => {
+    // Your slug generation logic here, possibly using SlugGenerator and difficulty
+    // For example: setSlug(SlugGenerator(difficulty));
+  }, [difficulty]);
+
+  return (
+    <GameContext.Provider value={{ slug, setSlug, generateSlug, difficulty, setDifficulty }}>
+      {children}
+    </GameContext.Provider>
+  );
+};
+
 export default GameContext;

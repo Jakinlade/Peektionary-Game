@@ -1,43 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-function CountdownTimer() {
-    // State to keep track of the timer value
-    const [timer, setTimer] = React.useState(100);
+const CountdownTimer = ({ gameStarted, setGameStarted, timeLeft, setTimeLeft, onUseHint }) => {
+  useEffect(() => {
+    if (!gameStarted) return;
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        setGameStarted(false); // Handle game end due to timer running out
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [gameStarted, timeLeft, setTimeLeft, setGameStarted]);
 
-    // useRef is used to hold a mutable value that persists across renders without causing a re-render
-    const id = React.useRef(null);
+  // Expose the reduceTimerForHint function via onUseHint prop
+  useEffect(() => {
+    onUseHint(() => reduceTimerForHint());
+  }, [onUseHint]); // Ensure this runs only when onUseHint changes
 
-    // Function to clear the interval
-    const clear = () => {
-        window.clearInterval(id.current);
-    };
+  // Function to reduce timer for hint
+  const reduceTimerForHint = () => setTimeLeft((prevTime) => Math.max(prevTime - 10, 0));
 
-    // useEffect to set up the interval for the countdown timer
-    React.useEffect(() => {
-        // Set up an interval that decreases the timer by 1 every second
-        id.current = window.setInterval(() => {
-            setTimer((time) => time - 1);
-        }, 1000);
-
-        // Clean up function to clear the interval when the component unmounts
-        return () => clear();
-    }, []); // Empty dependency array means this effect runs once on mount
-
-    // useEffect to handle when the timer reaches 0
-    React.useEffect(() => {
-        if (timer === 0) {
-            // Clear the interval when the timer reaches 0
-            clear();
-        }
-    }, [timer]); // This effect runs every time the timer value changes
-
-    // Render the timer in the UI
-    return (
-        <div className="App">
-            <div>Time left : {timer} </div>
-        </div>
-    );
-}
+  return <div>Time left: {timeLeft}</div>;
+};
 
 export default CountdownTimer;
-

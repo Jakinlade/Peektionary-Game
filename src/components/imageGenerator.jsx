@@ -1,66 +1,64 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import apiKey from "./API";
 import GameContext from "./GameContext";
 
-// ImageGenerator component generates an image based on a given slug
-function ImageGenerator(props) {
-  // Accessing the current slug from GameContext
-  const { slug } = useContext(GameContext);
+function ImageGenerator() {
+  const { slug, generateSlug } = useContext(GameContext); // Use generateSlug from GameContext
 
-  // Configuring OpenAI API with the provided API key
-  const configuration = new Configuration({
-    apiKey: apiKey,
-  });
-  const openai = new OpenAIApi(configuration);
-
-  // State to store the generated image URL
   const [result, setResult] = useState("");
 
-  // Function to generate an image based on the slug
-  const generateImage = async (slug) => {
-    console.log(slug); // Log the slug for debugging purposes
+  useEffect(() => {
+    // Call generateSlug every time this component is rendered
+    generateSlug();
+  }, [generateSlug]);
+
+  const generateImage = async () => {
+    console.log("Generating image for slug:", slug);
+    if (!slug) {
+      console.log("No slug provided for image generation");
+      return; // Prevent API call if slug is empty
+    }
+
+    const configuration = new Configuration({
+      apiKey: apiKey,
+    });
+    const openai = new OpenAIApi(configuration);
+
     try {
-      // Making the API call to OpenAI to generate the image
-      // Using DALL-E 3 model with supported image size
       const res = await openai.createImage({
-        model: "dall-e-3", // Specifying to use DALL-E 3 model
-        prompt: slug, // The slug acts as the prompt for the image generation
-        n: 1, // Number of images to generate (currently DALL-E 3 supports only 1)
-        size: "1024x1024", // Supported image size for DALL-E 3
+        model: "dall-e-3",
+        prompt: slug,
+        n: 1,
+        size: "1024x1024",
       });
-      // Setting the result to the generated image URL
       setResult(res.data.data[0].url);
     } catch (error) {
-      // Logging any errors that occur during the API call
-      console.error("Error generating image:", error);
+      console.error("Error generating image:", error.message || error);
     }
   };
 
-  // Render the ImageGenerator component
   return (
     <div>
-      {/* Button to trigger image generation */}
       <button
         id="generateBtn"
-        onClick={() => generateImage(slug)} // Using the slug from GameContext for image generation
+        onClick={generateImage}
         className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
       >
         Generate
       </button>
-      {/* Container to display the generated image */}
-      <div
-        id="image-container"
-        className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-      >
-        <img
-          className="object-fill aspect-auto"
-          src={result}
-          alt="Generated result"
-          data-prompt={slug}
-        />
-      </div>
-      {/* Additional layout or decorative element */}
+      {result && (
+        <div
+          id="image-container"
+          className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
+        >
+          <img
+            className="object-fill aspect-auto"
+            src={result}
+            alt="Generated result"
+          />
+        </div>
+      )}
       <div
         id="back-box-two"
         className="bg-blue-700 border-2 border-solid border-zinc-900"
