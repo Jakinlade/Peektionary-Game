@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react"; // Re-add useEffect for handling timer and game end logic
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
 import ImageGenerator from "./components/imageGenerator";
@@ -23,14 +23,8 @@ const Game = () => {
     setGameStarted(false);
     setShowModal(true);
     const difficultyMultiplier = difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
-    setScore(timer * difficultyMultiplier);
+    setScore(won ? timer * difficultyMultiplier : 0);
   }, [difficulty, timer]);
-
-  const startGame = () => {
-    setGameStarted(true);
-    setTimer(100);
-    setShowModal(false);
-  };
 
   const generateSlug = useCallback(() => {
     const newSlug = SlugGenerator(difficulty);
@@ -38,33 +32,34 @@ const Game = () => {
   }, [difficulty]);
 
   const handleUseHint = useCallback(() => {
-    setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
-  }, []);
+    if (!gameStarted) return;
+    setTimer(prevTimer => Math.max(prevTimer - 10, 0));
+  }, [gameStarted]);
 
+  // Check for game over condition (timer reaches 0)
   useEffect(() => {
-    if (timer === 0) {
-      handleGameEnd(false);
+    if (timer === 0 && gameStarted) {
+      handleGameEnd(false); // Game over
     }
-  }, [timer, handleGameEnd]);
+  }, [timer, gameStarted, handleGameEnd]);
 
+  // Check for game won condition (all words guessed correctly)
   useEffect(() => {
     const slugWords = slug.split(' ');
     if (gameStarted && correctWords.length === slugWords.length && correctWords.every(word => slugWords.includes(word))) {
-      handleGameEnd(true);
+      handleGameEnd(true); // Game won
     }
   }, [correctWords, slug, gameStarted, handleGameEnd]);
 
   return (
-    <GameContext.Provider value={{ slug, setSlug, generateSlug, setDifficulty }}>
-      <EndGameModal showModal={showModal} setShowModal={setShowModal} score={score} />
+    <GameContext.Provider value={{ slug, setSlug, generateSlug, setDifficulty, gameStarted, setGameStarted }}>
+      <EndGameModal showModal={showModal} setShowModal={setShowModal} score={score} gameWon={score > 0} />
       <CountdownTimer gameStarted={gameStarted} timeLeft={timer} setTimeLeft={setTimer} onUseHint={handleUseHint} />
       <DifficultySelector onSelectDifficulty={setDifficulty} />
-      <ImageGenerator onGenerate={generateSlug} />
+      <ImageGenerator onGenerate={generateSlug} onImageReady={() => setGameStarted(true)} />
       <PromptDisplay correctWords={correctWords} />
       <GuessForm correctWords={correctWords} setCorrectWords={setCorrectWords} />
       <HintButton slug={slug} onUseHint={handleUseHint} />
-      {!gameStarted && <button onClick={startGame}>Start Game</button>}
-      {/* The Generate Slug button can be removed if the ImageGenerator component now handles slug generation internally. */}
     </GameContext.Provider>
   );
 };
