@@ -2,14 +2,14 @@ import { Configuration, OpenAIApi } from "openai";
 import { useState, useContext, useEffect } from "react";
 import apiKey from "./API";
 import GameContext from "./GameContext";
+import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { slug, generateSlug } = useContext(GameContext); // Use generateSlug from GameContext
-
+  const { slug, generateSlug } = useContext(GameContext);
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false); // Added loading state
 
   useEffect(() => {
-    // Call generateSlug every time this component is rendered
     generateSlug();
   }, [generateSlug]);
 
@@ -19,7 +19,7 @@ function ImageGenerator() {
       console.log("No slug provided for image generation");
       return; // Prevent API call if slug is empty
     }
-
+    setLoading(true); // Start loading before making the API call
     const configuration = new Configuration({
       apiKey: apiKey,
     });
@@ -27,14 +27,16 @@ function ImageGenerator() {
 
     try {
       const res = await openai.createImage({
-        model: "dall-e-3",
+        model: "dall-e-3", // Ensure this model is correct and available
         prompt: slug,
         n: 1,
         size: "1024x1024",
       });
       setResult(res.data.data[0].url);
+      setLoading(false); // Stop loading once the image is ready
     } catch (error) {
       console.error("Error generating image:", error.message || error);
+      setLoading(false); // Ensure loading stops if there's an error
     }
   };
 
@@ -47,18 +49,18 @@ function ImageGenerator() {
       >
         Generate
       </button>
-      {result && (
-        <div
-          id="image-container"
-          className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-        >
-          <img
-            className="object-fill aspect-auto"
-            src={result}
-            alt="Generated result"
-          />
-        </div>
-      )}
+      <div
+        id="image-container"
+        className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
+      >
+        {loading ? (
+          <img src={LoadingImage} alt="Loading..." />
+        ) : result ? (
+          <img className="object-fill aspect-auto" src={result} alt="Generated result" />
+        ) : (
+          <div>Image will appear here.</div> // Placeholder text or empty div as needed
+        )}
+      </div>
       <div
         id="back-box-two"
         className="bg-blue-700 border-2 border-solid border-zinc-900"

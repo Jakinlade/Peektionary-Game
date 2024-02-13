@@ -5,13 +5,13 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.6.5",
     "firebase": "^9.17.2",
     "open": "^8.4.2",
-    "openai": "^3.3.0",
+    "openai": "^3.2.1",
     "random-word-slugs": "^0.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -44,6 +44,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@rollup/plugin-terser": "^0.4.4"
   }
 }

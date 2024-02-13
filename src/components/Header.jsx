@@ -1,30 +1,15 @@
-import React from "react";
-import logo from "../images/logo.svg"; 
-
-// function Header() {
-//   return (
-//     <div id="header">
-//       <img src={logo} alt="My Logo" />
-//     </div>
-//   );
-// }
-
-// export default Header;
-
-
-
-import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react';
+import { Dialog } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import logo from "../images/logo.svg";
 
 const navigation = [
   { name: 'How to Play', href: '#' },
   { name: 'About', href: '#' },
- 
-]
+];
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-white">
@@ -32,6 +17,7 @@ export default function Header() {
         <div className="flex flex-1">
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
                 {item.name}
               </a>
@@ -48,11 +34,13 @@ export default function Header() {
             </button>
           </div>
         </div>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a href="#" className="-m-1.5 p-1.5">
           <span className="sr-only">Your Company</span>
           <img className="w-auto h-8" src={logo} alt="" />
         </a>
         <div className="flex justify-end flex-1">
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Log in <span aria-hidden="true">&rarr;</span>
           </a>
@@ -72,6 +60,7 @@ export default function Header() {
                 <XMarkIcon className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
@@ -81,6 +70,7 @@ export default function Header() {
               />
             </a>
             <div className="flex justify-end flex-1">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                 Log in <span aria-hidden="true">&rarr;</span>
               </a>
@@ -88,6 +78,7 @@ export default function Header() {
           </div>
           <div className="mt-6 space-y-2">
             {navigation.map((item) => (
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
                 key={item.name}
                 href={item.href}
@@ -100,5 +91,5 @@ export default function Header() {
         </Dialog.Panel>
       </Dialog>
     </header>
-  )
+  );
 }

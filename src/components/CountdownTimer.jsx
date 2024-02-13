@@ -1,27 +1,55 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from 'react';
 
-const CountdownTimer = ({ gameStarted, setGameStarted, timeLeft, setTimeLeft, onUseHint }) => {
+const CountdownTimer = ({ gameStarted, timeLeft, setTimeLeft, onUseHint }) => {
+  // useRef to persist the function without having to include it in dependency arrays
+  const reduceTimerForHintRef = useRef();
+
+  // This effect sets up the interval for the timer countdown
   useEffect(() => {
-    if (!gameStarted) return;
+    console.log("Game started:", gameStarted); // Add this line
+    if (!gameStarted) {
+      return;
+    }
+
+    // When the game starts, we set up a timer that decreases every second
     const interval = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        setGameStarted(false); // Handle game end due to timer running out
-      }
+      console.log("Countdown tick"); // Add this line
+      setTimeLeft(prevTime => {
+        if (prevTime <= 1) {
+          clearInterval(interval);
+        }
+        return prevTime - 1;
+      });
     }, 1000);
+
+    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
-  }, [gameStarted, timeLeft, setTimeLeft, setGameStarted]);
+  }, [gameStarted, setTimeLeft]);
+
+  // Initializes the ref with the reduceTimerForHint function
+  useEffect(() => {
+    // This function will be called when the hint is used
+    reduceTimerForHintRef.current = () => {
+      setTimeLeft(prevTime => Math.max(prevTime - 10, 0));
+    };
+  }, [setTimeLeft]);
 
   // Expose the reduceTimerForHint function via onUseHint prop
   useEffect(() => {
-    onUseHint(() => reduceTimerForHint());
-  }, [onUseHint]); // Ensure this runs only when onUseHint changes
+    // When the hint is used, we call the current reference of reduceTimerForHint
+    onUseHint(() => {
+      if (reduceTimerForHintRef.current) {
+        reduceTimerForHintRef.current();
+      }
+    });
+  }, [onUseHint]);
 
-  // Function to reduce timer for hint
-  const reduceTimerForHint = () => setTimeLeft((prevTime) => Math.max(prevTime - 10, 0));
-
-  return <div>Time left: {timeLeft}</div>;
+  // Render the time left
+  return (
+    <div>
+      Time left: {timeLeft}
+    </div>
+  );
 };
 
 export default CountdownTimer;
