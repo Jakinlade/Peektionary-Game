@@ -5,7 +5,8 @@ import GameContext from "./GameContext";
 import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { slug, generateSlug, setGameStarted } = useContext(GameContext); // Include setGameStarted in useContext
+  const { slug, generateSlug, setGameStarted, gameStarted } =
+    useContext(GameContext); // Include setGameStarted in useContext
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -43,13 +44,15 @@ function ImageGenerator() {
 
   return (
     <div>
-      <button
-        id="generateBtn"
-        onClick={generateImage}
-        className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
-      >
-        Generate
-      </button>
+      {!gameStarted && (
+        <button
+          id="generateBtn"
+          onClick={generateImage}
+          className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        >
+          Generate
+        </button>
+      )}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"

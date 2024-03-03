@@ -25,7 +25,7 @@ function SlugGenerator(difficulty) {
       format: "title",
       partsOfSpeech: ["adjective", "adjective", "noun"],
       categories: {
-        adjective: ["color", "shape", "personality"],
+        adjective: ["color", "shape"],
         noun: ["animals", "food", "transportation", "people"],
       },
     });
