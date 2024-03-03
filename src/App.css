@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+.guess-form-container {
+  margin: 20px; /* Adjust the margin as needed */
+}
+
+.guess-form {
+  display: flex;
+  flex-direction: column; /* Stack the label and button vertically */
+  align-items: center; /* Center align the form items */
+  gap: 10px; /* Adds space between form items */
+}
+
+.guess-input {
+  margin-top: 10px; /* Space above the input */
+  margin-bottom: 10px; /* Space below the input */
+}
+
+.submit-button {
+  padding: 5px 10px; /* Padding inside the button */
+}
+
+.placeholder-display {
+  margin-top: 10px; /* Space above the placeholder display */
+}
