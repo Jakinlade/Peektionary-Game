@@ -5,14 +5,15 @@ import GameContext from "./GameContext";
 import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { slug, generateSlug, setGameStarted, gameStarted } =
-    useContext(GameContext); // Include setGameStarted in useContext
+  const { slug, setGameStarted, gameStarted } = useContext(GameContext); // Include setGameStarted in useContext
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    generateSlug();
-  }, [generateSlug]);
+    if (slug) {
+      generateImage();
+    }
+  }, [slug]); // Depend on slug
 
   const generateImage = async () => {
     console.log("Generating image for slug:", slug);
