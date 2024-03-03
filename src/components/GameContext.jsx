@@ -8,13 +8,22 @@ export const GameProvider = ({ children }) => {
   const [difficulty, setDifficulty] = useState("easy");
   const [gameStarted, setGameStarted] = useState(false);
   const [guessedWords, setGuessedWords] = useState([]);
+  const [useOpenAI, setUseOpenAI] = useState(false);
+
+  const toggleGenerator = useCallback(() => {
+    setUseOpenAI((prevState) => !prevState);
+  }, []);
 
   const generateSlug = useCallback(() => {
-    const newSlug = SlugGenerator(difficulty);
-    console.log("Slug generated in GameContext:", newSlug); // Add this line
-    setSlug(newSlug);
-    setGuessedWords(newSlug.split(" ").map(() => null));
-  }, [difficulty]);
+    if (useOpenAI) {
+      // Logic to call OpenAIWordGenerator
+      // You might need to handle this asynchronously
+    } else {
+      const newSlug = SlugGenerator(difficulty);
+      setSlug(newSlug);
+      setGuessedWords(newSlug.split(" ").map(() => null));
+    }
+  }, [useOpenAI, difficulty]);
 
   const updateGuessedWords = useCallback(
     (guess) => {
@@ -79,6 +88,8 @@ export const GameProvider = ({ children }) => {
         setGameStarted,
         guessedWords,
         updateGuessedWords,
+        toggleGenerator,
+        useOpenAI,
       }}
     >
       {children}

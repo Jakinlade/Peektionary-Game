@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState } from "react";
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
 import ImageGenerator from "./components/imageGenerator";
@@ -7,6 +7,8 @@ import DifficultySelector from "./components/DifficultySelector";
 import GameContext from "./components/GameContext";
 import HintButton from "./components/HintButton";
 import EndGameModal from "./components/EndGameModal";
+import AIWordGenerator from "./components/AIWordGenerator";
+import SlugGenerator from "./components/SlugGenerator";
 
 const Game = () => {
   // Utilize useContext to access game state and functions
@@ -16,13 +18,16 @@ const Game = () => {
     setGameStarted,
     guessedWords,
     setDifficulty,
-    generateSlug, // Now directly used from context
-    // updateGuessedWords,
+    generateSlug,
+    toggleGenerator,
+    useOpenAI,
+    setSlug,
   } = useContext(GameContext);
 
   const [showModal, setShowModal] = React.useState(false);
   const [score, setScore] = React.useState(0);
   const [timer, setTimer] = React.useState(100);
+  const [triggerGeneration, setTriggerGeneration] = useState(false);
 
   // Adjusted to use context state and functions
   const handleGameEnd = useCallback(
@@ -41,6 +46,20 @@ const Game = () => {
     if (!gameStarted) return;
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
   }, [gameStarted]);
+
+  useEffect(() => {
+    // Trigger AIWordGenerator or SlugGenerator based on useOpenAI state
+    if (triggerGeneration) {
+      if (useOpenAI) {
+        // AIWordGenerator should be triggered here or through its own useEffect based on triggerGeneration
+      } else {
+        const slug = SlugGenerator(difficulty);
+        setSlug(slug);
+      }
+      setGameStarted(true);
+      setTriggerGeneration(false); // Reset trigger after generation
+    }
+  }, [useOpenAI, triggerGeneration, difficulty, setSlug, setGameStarted]);
 
   // Game over condition
   useEffect(() => {
@@ -77,6 +96,10 @@ const Game = () => {
       />
       <GuessForm />
       <HintButton onUseHint={handleUseHint} />
+      <button onClick={toggleGenerator}>
+        {useOpenAI ? "Use Local Generator" : "Use AI Generator"}
+        {useOpenAI && <AIWordGenerator triggerGeneration={triggerGeneration} />}
+      </button>
     </div>
   );
 };
