@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback } from "react";
-import SlugGenerator from "./SlugGenerator"; // Import the SlugGenerator function
+import SlugGenerator from "./SlugGenerator";
 
 const GameContext = createContext();
 
@@ -7,36 +7,61 @@ export const GameProvider = ({ children }) => {
   const [slug, setSlug] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
   const [gameStarted, setGameStarted] = useState(false);
-  // Initialize state to track the guessed words in order
   const [guessedWords, setGuessedWords] = useState([]);
 
-  // Updated generateSlug function that uses SlugGenerator
   const generateSlug = useCallback(() => {
     const newSlug = SlugGenerator(difficulty);
+    console.log("Slug generated in GameContext:", newSlug); // Add this line
     setSlug(newSlug);
-    // Reset guessedWords with placeholders for each word in the new slug
-    const placeholders = newSlug.split(" ").map(() => null);
-    setGuessedWords(placeholders);
+    setGuessedWords(newSlug.split(" ").map(() => null));
   }, [difficulty]);
 
-  // Method to update guessed words based on the user's guess
   const updateGuessedWords = useCallback(
     (guess) => {
-      // Split the slug into words and lowercase for comparison
-      const slugWords = slug.toLowerCase().split(" ");
-      const guessIndex = slugWords.indexOf(guess.toLowerCase());
+      console.log("Received guess:", guess);
 
-      // If the guessed word is part of the slug, update its position in guessedWords
-      if (guessIndex !== -1) {
-        setGuessedWords((prevGuessedWords) => {
-          const newGuessedWords = [...prevGuessedWords];
-          newGuessedWords[guessIndex] = slugWords[guessIndex]; // Update with the original word case from slug
-          console.log(
-            "Correctly guessed words:",
-            newGuessedWords.filter((word) => word !== null).join(", ")
-          );
-          return newGuessedWords;
+      // Trim the guess to remove any white space
+      const normalizedGuess = guess.trim().toLowerCase();
+      console.log("Normalized guess:", normalizedGuess);
+
+      // Split the slug into words, handling potential white spaces correctly
+      const slugWords = slug.toLowerCase().split(/\s+/);
+      console.log("Slug words:", slugWords);
+
+      // Find all indices of the guessed word in the slugWords array
+      const matchedIndices = slugWords.reduce((indices, word, index) => {
+        console.log(
+          `Checking if slug word "${word}" at index ${index} matches guess "${normalizedGuess}"`
+        );
+        if (word === normalizedGuess) {
+          console.log(`Match found for "${normalizedGuess}" at index ${index}`);
+          indices.push(index);
+        }
+        return indices;
+      }, []);
+
+      console.log("Matched indices:", matchedIndices);
+
+      if (matchedIndices.length > 0) {
+        setGuessedWords((prev) => {
+          console.log("Previous guessedWords state:", prev);
+
+          // Create a copy of the previous guessed words array
+          const updated = [...prev];
+
+          // Update the placeholders for all matched indices with the correct word
+          matchedIndices.forEach((index) => {
+            console.log(
+              `Updating index ${index} with the correct word "${slugWords[index]}"`
+            );
+            updated[index] = slugWords[index];
+          });
+
+          console.log("Updated guessedWords state:", updated);
+          return updated;
         });
+      } else {
+        console.log(`No matches found for guess "${normalizedGuess}"`);
       }
     },
     [slug]
