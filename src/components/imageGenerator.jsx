@@ -5,9 +5,9 @@ import GameContext from "./GameContext";
 import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { slug, generateSlug } = useContext(GameContext);
+  const { slug, generateSlug, setGameStarted } = useContext(GameContext); // Include setGameStarted in useContext
   const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     generateSlug();
@@ -19,7 +19,7 @@ function ImageGenerator() {
       console.log("No slug provided for image generation");
       return; // Prevent API call if slug is empty
     }
-    setLoading(true); // Start loading before making the API call
+    setLoading(true);
     const configuration = new Configuration({
       apiKey: apiKey,
     });
@@ -27,13 +27,14 @@ function ImageGenerator() {
 
     try {
       const res = await openai.createImage({
-        model: "dall-e-3", // Ensure this model is correct and available
+        model: "dall-e-3",
         prompt: slug,
         n: 1,
         size: "1024x1024",
       });
       setResult(res.data.data[0].url);
-      setLoading(false); // Stop loading once the image is ready
+      setLoading(false); // Image generation succeeded
+      setGameStarted(true); // Start the game after the image has been successfully generated
     } catch (error) {
       console.error("Error generating image:", error.message || error);
       setLoading(false); // Ensure loading stops if there's an error
@@ -56,7 +57,11 @@ function ImageGenerator() {
         {loading ? (
           <img src={LoadingImage} alt="Loading..." />
         ) : result ? (
-          <img className="object-fill aspect-auto" src={result} alt="Generated result" />
+          <img
+            className="object-fill aspect-auto"
+            src={result}
+            alt="Generated result"
+          />
         ) : (
           <div>Image will appear here.</div> // Placeholder text or empty div as needed
         )}
