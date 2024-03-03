@@ -13,7 +13,9 @@ const GuessForm = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    updateGuessedWords(guess);
+    if (gameStarted) {
+      updateGuessedWords(guess);
+    }
     setGuess(""); // Clear the guess input after submission
     guessInput.current.focus(); // Refocus on the input field
   };
@@ -25,37 +27,31 @@ const GuessForm = () => {
           .split(" ")
           .map((word, index) =>
             guessedWords && guessedWords[index]
-              ? guessedWords[index].replace(/./g, (match) =>
-                  match === " " ? " " : "_"
-                )
+              ? guessedWords[index]
               : "_".repeat(word.length)
           )
-          .join(" / ")
+          .join(" ")
       : "";
 
   return (
-    <div>
-      <form
-        onSubmit={handleFormSubmit}
-        className="text-lg border-2 border-solid border-zinc-900 flex justify-evenly py-px bg-gray-300"
-      >
-        <label>
+    <div className="guess-form-container">
+      <form onSubmit={handleFormSubmit} className="guess-form">
+        <label className="guess-label">
           Guess:
           <input
             type="text"
             value={guess}
             onChange={handleInputChange}
             ref={guessInput}
+            className="guess-input"
           />
         </label>
-        <button type="submit" className="hover:font-extrabold">
+        <button type="submit" className="submit-button">
           Submit
         </button>
       </form>
-      <div>
-        {/* Display the placeholders or guessed words based on gameStarted */}
-        {placeholderDisplay}
-      </div>
+      {/* Display the placeholders or guessed words */}
+      <div className="placeholder-display">{placeholderDisplay}</div>
     </div>
   );
 };

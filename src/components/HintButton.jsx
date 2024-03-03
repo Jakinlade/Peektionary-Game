@@ -1,24 +1,25 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import GameContext from "./GameContext";
 import getHint from "./Hint";
 
-// HintButton component is responsible for handling hint requests and displaying the results
-export default function HintButton({ slug, onUseHint }) {
-  // State 'result' to store the hint received from the getHint function
+export default function HintButton({ onUseHint }) {
   const [result, setResult] = useState("");
+  const { slug } = useContext(GameContext); // Use slug from context
 
-  // Asynchronous function to handle click events on the hint button
+  useEffect(() => {
+    // Reset the result when the slug changes
+    setResult("");
+  }, [slug]); // Dependency on slug ensures effect runs when slug updates
+
   async function handleClick() {
     try {
-      // Requesting a hint using the getHint function with the current slug
-      const hint = await getHint(slug);
-      // Updating the 'result' state with the received hint
-      setResult(hint);
-      // Only call onUseHint if it's defined
+      // Call onUseHint if it's defined
       if (onUseHint) {
         onUseHint();
       }
+      const hint = await getHint(slug); // Use current slug from context
+      setResult(hint); // Update result with the hint
     } catch (error) {
-      // Logging any errors to the console and displaying them to the user
       console.error(error);
       alert(error.message);
     }
