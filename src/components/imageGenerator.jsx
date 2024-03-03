@@ -1,58 +1,71 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import apiKey from "./API";
 import GameContext from "./GameContext";
+import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
-// ImageGenerator component generates an image based on a given slug
-function ImageGenerator(props) {
-  // Accessing the current slug from GameContext
-  const { slug } = useContext(GameContext);
-
-  // Configuring OpenAI API with the provided API key
-  const configuration = new Configuration({
-    apiKey: apiKey,
-  });
-  const openai = new OpenAIApi(configuration);
-
-  // State to store the generated image URL
+function ImageGenerator() {
+  const { slug, generateSlug, setGameStarted } = useContext(GameContext); // Include setGameStarted in useContext
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Async function to generate an image using OpenAI's DALL-E model
-  const generateImage = async (slug) => {
-    console.log(slug); // Log the slug for debugging purposes
-    // Request to create an image using the OpenAI API
-    const res = await openai.createImage({
-      prompt: slug, // The prompt for image generation
-      n: 1,         // Number of images to generate
-      size: "512x512", // Size of the generated image
+  useEffect(() => {
+    generateSlug();
+  }, [generateSlug]);
+
+  const generateImage = async () => {
+    console.log("Generating image for slug:", slug);
+    if (!slug) {
+      console.log("No slug provided for image generation");
+      return; // Prevent API call if slug is empty
+    }
+    setLoading(true);
+    const configuration = new Configuration({
+      apiKey: apiKey,
     });
-    setResult(res.data.data[0].url); // Update the result state with the image URL
+    const openai = new OpenAIApi(configuration);
+
+    try {
+      const res = await openai.createImage({
+        model: "dall-e-3",
+        prompt: slug,
+        n: 1,
+        size: "1024x1024",
+      });
+      setResult(res.data.data[0].url);
+      setLoading(false); // Image generation succeeded
+      setGameStarted(true); // Start the game after the image has been successfully generated
+    } catch (error) {
+      console.error("Error generating image:", error.message || error);
+      setLoading(false); // Ensure loading stops if there's an error
+    }
   };
 
-  // Render the ImageGenerator component
   return (
     <div>
-      {/* Button to trigger image generation */}
       <button
         id="generateBtn"
-        onClick={() => generateImage(slug)} // Using the slug from GameContext for image generation
+        onClick={generateImage}
         className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
       >
         Generate
       </button>
-      {/* Container to display the generated image */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
       >
-        <img
-          className="object-fill aspect-auto"
-          src={result}
-          alt="Generated result"
-          data-prompt={props.prompt}
-        />
+        {loading ? (
+          <img src={LoadingImage} alt="Loading..." />
+        ) : result ? (
+          <img
+            className="object-fill aspect-auto"
+            src={result}
+            alt="Generated result"
+          />
+        ) : (
+          <div>Image will appear here.</div> // Placeholder text or empty div as needed
+        )}
       </div>
-      {/* Additional layout or decorative element */}
       <div
         id="back-box-two"
         className="bg-blue-700 border-2 border-solid border-zinc-900"

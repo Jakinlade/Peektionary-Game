@@ -1,43 +1,39 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
-function CountdownTimer() {
-    // State to keep track of the timer value
-    const [timer, setTimer] = React.useState(100);
+const CountdownTimer = ({ gameStarted, timeLeft, setTimeLeft }) => {
+  const timeLeftRef = useRef(timeLeft); // useRef to keep track of the current timeLeft
 
-    // useRef is used to hold a mutable value that persists across renders without causing a re-render
-    const id = React.useRef(null);
+  // Update the ref whenever the timeLeft changes
+  useEffect(() => {
+    timeLeftRef.current = timeLeft;
+  }, [timeLeft]);
 
-    // Function to clear the interval
-    const clear = () => {
-        window.clearInterval(id.current);
-    };
+  // This effect sets up the interval for the timer countdown
+  useEffect(() => {
+    console.log("Game started:", gameStarted);
+    if (!gameStarted) {
+      return;
+    }
 
-    // useEffect to set up the interval for the countdown timer
-    React.useEffect(() => {
-        // Set up an interval that decreases the timer by 1 every second
-        id.current = window.setInterval(() => {
-            setTimer((time) => time - 1);
-        }, 1000);
-
-        // Clean up function to clear the interval when the component unmounts
-        return () => clear();
-    }, []); // Empty dependency array means this effect runs once on mount
-
-    // useEffect to handle when the timer reaches 0
-    React.useEffect(() => {
-        if (timer === 0) {
-            // Clear the interval when the timer reaches 0
-            clear();
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(interval);
         }
-    }, [timer]); // This effect runs every time the timer value changes
+        return prevTime - 1;
+      });
+    }, 1000);
 
-    // Render the timer in the UI
-    return (
-        <div className="App">
-            <div>Time left : {timer} </div>
-        </div>
-    );
-}
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [gameStarted, setTimeLeft]);
+
+  // Render the time left
+  return (
+    <div>
+      <div>Time left: {timeLeft}</div>
+    </div>
+  );
+};
 
 export default CountdownTimer;
-
