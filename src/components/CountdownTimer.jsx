@@ -16,7 +16,6 @@ const CountdownTimer = ({ gameStarted, timeLeft, setTimeLeft }) => {
     }
 
     const interval = setInterval(() => {
-      console.log("Countdown tick, current timer:", timeLeftRef.current);
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           clearInterval(interval);
