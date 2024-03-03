@@ -36,7 +36,6 @@ const Game = () => {
   }, [difficulty]);
 
   const handleUseHint = useCallback(() => {
-    console.log("Hint used"); // Log when the hint function is triggered
     if (!gameStarted) return;
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
   }, [gameStarted]);
@@ -59,10 +58,6 @@ const Game = () => {
       handleGameEnd(true); // Game won
     }
   }, [correctWords, slug, gameStarted, handleGameEnd]);
-
-  const onHintButtonClick = () => {
-    handleUseHint();
-  };
 
   return (
     <GameContext.Provider
@@ -97,7 +92,7 @@ const Game = () => {
         correctWords={correctWords}
         setCorrectWords={setCorrectWords}
       />
-      <HintButton slug={slug} onUseHint={onHintButtonClick} />
+      <HintButton slug={slug} onUseHint={handleUseHint} />
     </GameContext.Provider>
   );
 };
