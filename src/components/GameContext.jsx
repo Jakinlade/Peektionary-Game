@@ -4,26 +4,42 @@ import SlugGenerator from "./SlugGenerator";
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-  const [slug, setSlug] = useState("");
+  const [phrase, setPhrase] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
   const [gameStarted, setGameStarted] = useState(false);
   const [guessedWords, setGuessedWords] = useState([]);
   const [useOpenAI, setUseOpenAI] = useState(false);
 
   const toggleGenerator = useCallback(() => {
-    setUseOpenAI((prevState) => !prevState);
+    setUseOpenAI((prevState) => {
+      console.log(
+        `Generator toggled. AI Generator is now ${
+          !prevState ? "active" : "inactive"
+        }.`
+      );
+      return !prevState;
+    });
   }, []);
 
-  const generateSlug = useCallback(() => {
+  // Update this function based on your actual implementation for AI or Slug generation
+  const generatePhrase = useCallback(() => {
+    console.log(
+      `Starting phrase generation using ${
+        useOpenAI ? "AI" : "Local"
+      } generator.`
+    );
     if (useOpenAI) {
-      // Logic to call OpenAIWordGenerator
-      // You might need to handle this asynchronously
+      // Invoke AI generation logic here
+      console.log("AI-based phrase generation logic is running...");
+      // ... AI generation code
     } else {
-      const newSlug = SlugGenerator(difficulty);
-      setSlug(newSlug);
-      setGuessedWords(newSlug.split(" ").map(() => null));
+      // Use local generator
+      console.log("Local phrase generation logic is running...");
+      const generatedPhrase = SlugGenerator(difficulty);
+      console.log(`Local generator produced the phrase: "${generatedPhrase}"`);
+      setPhrase(generatedPhrase);
     }
-  }, [useOpenAI, difficulty]);
+  }, [useOpenAI, difficulty, setPhrase]);
 
   const updateGuessedWords = useCallback(
     (guess) => {
@@ -33,14 +49,14 @@ export const GameProvider = ({ children }) => {
       const normalizedGuess = guess.trim().toLowerCase();
       console.log("Normalized guess:", normalizedGuess);
 
-      // Split the slug into words, handling potential white spaces correctly
-      const slugWords = slug.toLowerCase().split(/\s+/);
-      console.log("Slug words:", slugWords);
+      // Split the Phrase into words, handling potential white spaces correctly
+      const PhraseWords = phrase.toLowerCase().split(/\s+/);
+      console.log("Phrase words:", PhraseWords);
 
-      // Find all indices of the guessed word in the slugWords array
-      const matchedIndices = slugWords.reduce((indices, word, index) => {
+      // Find all indices of the guessed word in the PhraseWords array
+      const matchedIndices = PhraseWords.reduce((indices, word, index) => {
         console.log(
-          `Checking if slug word "${word}" at index ${index} matches guess "${normalizedGuess}"`
+          `Checking if Phrase word "${word}" at index ${index} matches guess "${normalizedGuess}"`
         );
         if (word === normalizedGuess) {
           console.log(`Match found for "${normalizedGuess}" at index ${index}`);
@@ -61,9 +77,9 @@ export const GameProvider = ({ children }) => {
           // Update the placeholders for all matched indices with the correct word
           matchedIndices.forEach((index) => {
             console.log(
-              `Updating index ${index} with the correct word "${slugWords[index]}"`
+              `Updating index ${index} with the correct word "${PhraseWords[index]}"`
             );
-            updated[index] = slugWords[index];
+            updated[index] = PhraseWords[index];
           });
 
           console.log("Updated guessedWords state:", updated);
@@ -73,15 +89,15 @@ export const GameProvider = ({ children }) => {
         console.log(`No matches found for guess "${normalizedGuess}"`);
       }
     },
-    [slug]
+    [phrase]
   );
 
   return (
     <GameContext.Provider
       value={{
-        slug,
-        setSlug,
-        generateSlug,
+        phrase,
+        setPhrase,
+        generatePhrase,
         difficulty,
         setDifficulty,
         gameStarted,

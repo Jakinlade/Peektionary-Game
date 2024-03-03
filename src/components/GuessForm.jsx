@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
 
 const GuessForm = () => {
-  const { updateGuessedWords, guessedWords, slug, gameStarted } =
+  const { updateGuessedWords, guessedWords, phrase, gameStarted } =
     useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
@@ -22,8 +22,8 @@ const GuessForm = () => {
 
   // Generate the placeholder display based on gameStarted
   const placeholderDisplay =
-    slug && gameStarted
-      ? slug
+    phrase && gameStarted
+      ? phrase
           .split(" ")
           .map((word, index) =>
             guessedWords && guessedWords[index]

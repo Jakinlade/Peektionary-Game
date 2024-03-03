@@ -18,10 +18,10 @@ const Game = () => {
     setGameStarted,
     guessedWords,
     setDifficulty,
-    generateSlug,
+    generatePhrase,
     toggleGenerator,
     useOpenAI,
-    setSlug,
+    setPhrase,
   } = useContext(GameContext);
 
   const [showModal, setShowModal] = React.useState(false);
@@ -53,13 +53,13 @@ const Game = () => {
       if (useOpenAI) {
         // AIWordGenerator should be triggered here or through its own useEffect based on triggerGeneration
       } else {
-        const slug = SlugGenerator(difficulty);
-        setSlug(slug);
+        const phrase = SlugGenerator(difficulty);
+        setPhrase(phrase);
       }
       setGameStarted(true);
       setTriggerGeneration(false); // Reset trigger after generation
     }
-  }, [useOpenAI, triggerGeneration, difficulty, setSlug, setGameStarted]);
+  }, [useOpenAI, triggerGeneration, difficulty, setPhrase, setGameStarted]);
 
   // Game over condition
   useEffect(() => {
@@ -91,7 +91,7 @@ const Game = () => {
       />
       <DifficultySelector onSelectDifficulty={setDifficulty} />
       <ImageGenerator
-        onGenerate={generateSlug}
+        onGenerate={generatePhrase}
         onImageReady={() => setGameStarted(true)}
       />
       <GuessForm />

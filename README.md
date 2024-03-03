@@ -57,11 +57,11 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
       <div
 ```
 
-A function that uses a randomly generated slug as the prompt for the openAI image generator API
+A function that uses a randomly generated Phrase as the prompt for the openAI image generator API
 
 ```js
 function ImageGenerator(props) {
-  const { slug } = useContext(GameContext); // Get the slug from the GameContext
+  const { phrase } = useContext(GameContext); // Get the phrase from the GameContext
   const configuration = new Configuration({
     apiKey: apiKey,
   });
