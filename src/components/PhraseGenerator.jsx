@@ -23,9 +23,19 @@ export const PhraseGenerator = ({ difficulty }) => {
 
   return (
     <div>
-      <button onClick={generatePhrase}>Generate Phrase</button>
-      <button onClick={toggleGenerator}>
-        {useOpenAI ? "Use Local Generator" : "Use AI Generator"}
+      <button
+        onClick={toggleGenerator}
+        className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        id="phraseBtn"
+      >
+        {useOpenAI ? "Toggle: AI Phrases" : "Toggle: Basic Phrases "}
+      </button>
+      <button
+        onClick={generatePhrase}
+        className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        id="generateBtn"
+      >
+        Play
       </button>
     </div>
   );

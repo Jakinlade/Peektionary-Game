@@ -1,7 +1,7 @@
 // GuessForm.jsx
 import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
-import WordChecker from "./WordChecker";
+import WordChecker from "./wordChecker";
 
 const GuessForm = () => {
   const { guessedWords, gameStarted } = useContext(GameContext);
