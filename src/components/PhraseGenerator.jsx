@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"; // Added to use useState fo
 import AIWordGenerator from "./AIWordGenerator";
 import SlugGenerator from "./SlugGenerator";
 import GameContext from "./GameContext"; // Import GameContext to use its state and updater functions
+import apiKey from "./API";
 
 export const PhraseGenerator = ({ difficulty }) => {
   const { setPhrase } = useContext(GameContext);
@@ -14,7 +15,7 @@ export const PhraseGenerator = ({ difficulty }) => {
   const generatePhrase = async () => {
     let newPhrase = "";
     if (useOpenAI) {
-      newPhrase = await AIWordGenerator(difficulty);
+      newPhrase = await AIWordGenerator(difficulty, apiKey);
     } else {
       newPhrase = SlugGenerator(difficulty);
     }

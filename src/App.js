@@ -16,6 +16,7 @@ const Game = () => {
     setGameStarted,
     guessedWords,
     setDifficulty,
+
     imageGenerated,
     setImageGenerated,
   } = useContext(GameContext);

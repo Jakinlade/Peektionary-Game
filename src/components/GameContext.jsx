@@ -9,6 +9,7 @@ export const GameProvider = ({ children }) => {
   const [guessedWords, setGuessedWords] = useState([]);
   const [useOpenAI] = useState(false);
   const [imageGenerated, setImageGenerated] = useState(false);
+  const [triggerGeneration, setTriggerGeneration] = useState(false);
 
   return (
     <GameContext.Provider
@@ -24,6 +25,8 @@ export const GameProvider = ({ children }) => {
         useOpenAI,
         imageGenerated,
         setImageGenerated,
+        triggerGeneration,
+        setTriggerGeneration,
       }}
     >
       {children}
