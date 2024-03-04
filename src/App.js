@@ -14,19 +14,27 @@ const Game = () => {
     difficulty,
     gameStarted,
     setGameStarted,
-    guessedWords,
+    currentGuessState,
     setDifficulty,
-
     imageGenerated,
-    setImageGenerated,
   } = useContext(GameContext);
+
+  console.log("Initial States:", {
+    difficulty,
+    gameStarted,
+    currentGuessState,
+    imageGenerated,
+  });
 
   const [showModal, setShowModal] = useState(false);
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(100);
 
+  console.log("Component States:", { showModal, score, timer });
+
   const handleGameEnd = useCallback(
     (won = false) => {
+      console.log(`Game Ending: ${won ? "Won" : "Lost"}`);
       setGameStarted(false);
       setShowModal(true);
       const difficultyMultiplier =
@@ -38,27 +46,38 @@ const Game = () => {
 
   const handleUseHint = useCallback(() => {
     if (!gameStarted) return;
+    console.log("Hint Used");
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
   }, [gameStarted]);
 
   useEffect(() => {
+    console.log("Timer Check:", timer);
     if (timer === 0 && gameStarted) {
+      console.log("Timer expired");
       handleGameEnd(false);
     }
   }, [timer, gameStarted, handleGameEnd]);
 
   useEffect(() => {
+    console.log("Image Generated Check:", imageGenerated);
     if (imageGenerated) {
+      console.log("Setting game to started");
       setGameStarted(true);
-      setImageGenerated(false);
     }
-  }, [imageGenerated, setGameStarted, setImageGenerated]);
+  }, [imageGenerated, setGameStarted]);
 
   useEffect(() => {
-    if (gameStarted && guessedWords.every((word) => word)) {
+    console.log("Checking win condition", { currentGuessState, gameStarted });
+    if (
+      gameStarted &&
+      currentGuessState.every(
+        (word) => word.replace(/_/g, "").trim().length > 0
+      )
+    ) {
+      console.log("All words guessed, game won");
       handleGameEnd(true);
     }
-  }, [guessedWords, gameStarted, handleGameEnd]);
+  }, [currentGuessState, gameStarted, handleGameEnd]);
 
   return (
     <div className="App">
