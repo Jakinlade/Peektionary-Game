@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState } from "react";
 import "./App.css";
 import CountdownTimer from "./components/CountdownTimer";
 import ImageGenerator from "./components/imageGenerator";
@@ -7,24 +7,23 @@ import DifficultySelector from "./components/DifficultySelector";
 import GameContext from "./components/GameContext";
 import HintButton from "./components/HintButton";
 import EndGameModal from "./components/EndGameModal";
+import PhraseGenerator from "./components/PhraseGenerator"; // Corrected import
 
 const Game = () => {
-  // Utilize useContext to access game state and functions
   const {
     difficulty,
     gameStarted,
     setGameStarted,
     guessedWords,
     setDifficulty,
-    generateSlug, // Now directly used from context
-    // updateGuessedWords,
+    imageGenerated,
+    setImageGenerated,
   } = useContext(GameContext);
 
-  const [showModal, setShowModal] = React.useState(false);
-  const [score, setScore] = React.useState(0);
-  const [timer, setTimer] = React.useState(100);
+  const [showModal, setShowModal] = useState(false);
+  const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(100);
 
-  // Adjusted to use context state and functions
   const handleGameEnd = useCallback(
     (won = false) => {
       setGameStarted(false);
@@ -36,22 +35,25 @@ const Game = () => {
     [difficulty, timer, setGameStarted]
   );
 
-  // Handle hint use
   const handleUseHint = useCallback(() => {
     if (!gameStarted) return;
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
   }, [gameStarted]);
 
-  // Game over condition
   useEffect(() => {
     if (timer === 0 && gameStarted) {
       handleGameEnd(false);
     }
   }, [timer, gameStarted, handleGameEnd]);
 
-  // Game won condition
   useEffect(() => {
-    // Simplified to use guessedWords directly
+    if (imageGenerated) {
+      setGameStarted(true);
+      setImageGenerated(false);
+    }
+  }, [imageGenerated, setGameStarted, setImageGenerated]);
+
+  useEffect(() => {
     if (gameStarted && guessedWords.every((word) => word)) {
       handleGameEnd(true);
     }
@@ -71,10 +73,8 @@ const Game = () => {
         setTimeLeft={setTimer}
       />
       <DifficultySelector onSelectDifficulty={setDifficulty} />
-      <ImageGenerator
-        onGenerate={generateSlug}
-        onImageReady={() => setGameStarted(true)}
-      />
+      {!gameStarted && <PhraseGenerator difficulty={difficulty} />}
+      <ImageGenerator />
       <GuessForm />
       <HintButton onUseHint={handleUseHint} />
     </div>

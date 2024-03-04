@@ -1,9 +1,10 @@
+// GuessForm.jsx
 import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
+import WordChecker from "./wordChecker";
 
 const GuessForm = () => {
-  const { updateGuessedWords, guessedWords, slug, gameStarted } =
-    useContext(GameContext);
+  const { guessedWords, gameStarted } = useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
 
@@ -13,25 +14,16 @@ const GuessForm = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (gameStarted) {
-      updateGuessedWords(guess);
-    }
-    setGuess(""); // Clear the guess input after submission
-    guessInput.current.focus(); // Refocus on the input field
+    // The input for the guess will be handled by WordChecker
+    // Clear the input field and refocus after submission
+    setGuess("");
+    guessInput.current.focus();
   };
 
-  // Generate the placeholder display based on gameStarted
-  const placeholderDisplay =
-    slug && gameStarted
-      ? slug
-          .split(" ")
-          .map((word, index) =>
-            guessedWords && guessedWords[index]
-              ? guessedWords[index]
-              : "_".repeat(word.length)
-          )
-          .join(" ")
-      : "";
+  // Generate the placeholder display based on gameStarted and guessedWords
+  const placeholderDisplay = guessedWords
+    .map((word) => word || "_".repeat(word.length))
+    .join(" ");
 
   return (
     <div className="guess-form-container">
@@ -44,13 +36,14 @@ const GuessForm = () => {
             onChange={handleInputChange}
             ref={guessInput}
             className="guess-input"
+            autoComplete="off"
           />
         </label>
         <button type="submit" className="submit-button">
           Submit
         </button>
       </form>
-      {/* Display the placeholders or guessed words */}
+      {gameStarted && <WordChecker guess={guess} setGuess={setGuess} />}
       <div className="placeholder-display">{placeholderDisplay}</div>
     </div>
   );

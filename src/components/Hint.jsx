@@ -25,8 +25,11 @@ const getHint = async (slug) => {
       model: "gpt-3.5-turbo-1106",
       messages: [
         { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: `Provide a hint about the phrase '${slug}', without revealing it directly.` }
-      ]
+        {
+          role: "user",
+          content: `Provide a hint about the phrase '${slug}', without revealing it directly.`,
+        },
+      ],
     });
 
     // Returning the generated hint, trimmed for extra whitespace

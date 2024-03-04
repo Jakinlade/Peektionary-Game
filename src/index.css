@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 body {
   margin: 0;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url("./images/bg-one.svg");
@@ -17,7 +16,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -27,9 +26,9 @@ code {
   font-size: 4em;
   width: 30rem;
   height: 2rem;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
   margin-right: auto;
 }
 #game-rules {
@@ -37,10 +36,10 @@ code {
   height: 3rem;
   z-index: 2;
   align-items: center;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #select-level {
@@ -49,10 +48,10 @@ code {
   position: absolute;
   z-index: 2;
   align-items: center;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #back-box-one {
@@ -60,18 +59,26 @@ code {
   height: 3rem;
   top: 8px;
   left: 8px;
-  right: 0; 
+  right: 0;
   position: relative;
   z-index: 1;
-  margin-left: auto; 
-  margin-right: auto; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #generateBtn {
   width: 30rem;
   margin-bottom: 0.5rem;
   margin-top: 1rem;
-  margin-left: auto; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#phraseBtn {
+  width: 30rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-left: auto;
   margin-right: auto;
 }
 
@@ -79,7 +86,7 @@ code {
   width: 30rem;
   margin-bottom: 0.5rem;
   margin-top: 2rem;
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: auto;
 }
 
@@ -88,10 +95,10 @@ code {
   height: 18rem;
   position: absolute;
   z-index: 2;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #back-box-two {
@@ -100,10 +107,10 @@ code {
   position: relative;
   top: 8px;
   left: 8px;
-  right: 0; 
+  right: 0;
   z-index: 1;
-  margin-left: auto; 
-  margin-right: auto; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #input-bar {
@@ -111,10 +118,10 @@ code {
   height: 2.5rem;
   position: absolute;
   z-index: 2;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #back-box-three {
@@ -123,10 +130,10 @@ code {
   position: relative;
   top: 8px;
   left: 8px;
-  right: 0; 
+  right: 0;
   z-index: 0;
-  margin-left: auto; 
-  margin-right: auto; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #button-bar {
@@ -159,9 +166,9 @@ code {
   #header {
     margin-top: 0.2rem;
   }
-  
+
   #select-level,
-  #back-box-one  {
+  #back-box-one {
     width: 25rem;
     height: 3rem;
   }
@@ -170,13 +177,13 @@ code {
   #hint {
     width: 25rem;
   }
-  
+
   #image-container,
   #back-box-two {
     width: 25rem;
     height: 18rem;
   }
-  
+
   #input-bar,
   #back-box-three {
     width: 25rem;
@@ -188,9 +195,9 @@ code {
   #header {
     margin-top: 0.2rem;
   }
-  
+
   #select-level,
-  #back-box-one  {
+  #back-box-one {
     width: 22rem;
     height: 3rem;
   }
@@ -199,13 +206,13 @@ code {
   #hint {
     width: 22rem;
   }
-  
+
   #image-container,
   #back-box-two {
     width: 22rem;
     height: 18rem;
   }
-  
+
   #input-bar,
   #back-box-three {
     width: 22rem;
