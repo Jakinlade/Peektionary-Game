@@ -11,35 +11,20 @@ export const GameProvider = ({ children }) => {
   const [useOpenAI, setUseOpenAI] = useState(false);
 
   const toggleGenerator = useCallback(() => {
-    setUseOpenAI((prevState) => {
-      console.log(
-        `Generator toggled. AI Generator is now ${
-          !prevState ? "active" : "inactive"
-        }.`
-      );
-      return !prevState;
-    });
+    setUseOpenAI((prevState) => !prevState);
   }, []);
 
-  // Update this function based on your actual implementation for AI or Slug generation
   const generatePhrase = useCallback(() => {
-    console.log(
-      `Starting phrase generation using ${
-        useOpenAI ? "AI" : "Local"
-      } generator.`
-    );
     if (useOpenAI) {
-      // Invoke AI generation logic here
+      // Placeholder for AI-based phrase generation logic
       console.log("AI-based phrase generation logic is running...");
-      // ... AI generation code
+      // The AI generation code should also include `setPhrase` with the generated phrase
     } else {
-      // Use local generator
       console.log("Local phrase generation logic is running...");
       const generatedPhrase = SlugGenerator(difficulty);
-      console.log(`Local generator produced the phrase: "${generatedPhrase}"`);
       setPhrase(generatedPhrase);
     }
-  }, [useOpenAI, difficulty, setPhrase]);
+  }, [useOpenAI, difficulty]);
 
   const updateGuessedWords = useCallback(
     (guess) => {

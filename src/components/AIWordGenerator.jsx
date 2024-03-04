@@ -4,7 +4,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const AIWordGenerator = ({ triggerGeneration }) => {
   const { difficulty, setPhrase } = useContext(GameContext);
-  const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
+  const apiKey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     console.log(
@@ -14,7 +14,7 @@ const AIWordGenerator = ({ triggerGeneration }) => {
     );
 
     // Function to interact with the OpenAI API
-    async function generatePhrase() {
+    async function generateSlug() {
       console.log("AIWordGenerator: Starting slug generation...");
       if (!apiKey) {
         console.warn("AIWordGenerator: OpenAI API key is not set.");
@@ -58,7 +58,7 @@ const AIWordGenerator = ({ triggerGeneration }) => {
       console.log(
         "AIWordGenerator: Trigger generation is active. Generating slug..."
       );
-      generatePhrase();
+      generateSlug();
     }
   }, [triggerGeneration, difficulty, apiKey, setPhrase]);
 

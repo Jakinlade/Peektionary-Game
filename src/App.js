@@ -18,7 +18,6 @@ const Game = () => {
     setGameStarted,
     guessedWords,
     setDifficulty,
-    generatePhrase,
     toggleGenerator,
     useOpenAI,
     setPhrase,
@@ -41,6 +40,11 @@ const Game = () => {
     [difficulty, timer, setGameStarted]
   );
 
+  const handleGenerateClick = () => {
+    console.log("Generate button clicked.");
+    setTriggerGeneration(true); // This will initiate the phrase generation process
+  };
+
   // Handle hint use
   const handleUseHint = useCallback(() => {
     if (!gameStarted) return;
@@ -48,18 +52,16 @@ const Game = () => {
   }, [gameStarted]);
 
   useEffect(() => {
-    // Trigger AIWordGenerator or SlugGenerator based on useOpenAI state
     if (triggerGeneration) {
       if (useOpenAI) {
-        // AIWordGenerator should be triggered here or through its own useEffect based on triggerGeneration
+        // Assuming AIWordGenerator will auto-trigger upon `triggerGeneration` change
       } else {
-        const phrase = SlugGenerator(difficulty);
-        setPhrase(phrase);
+        const newPhrase = SlugGenerator(difficulty);
+        setPhrase(newPhrase);
       }
-      setGameStarted(true);
-      setTriggerGeneration(false); // Reset trigger after generation
+      setTriggerGeneration(false); // Reset trigger after the phrase is set
     }
-  }, [useOpenAI, triggerGeneration, difficulty, setPhrase, setGameStarted]);
+  }, [useOpenAI, triggerGeneration, difficulty, setPhrase]);
 
   // Game over condition
   useEffect(() => {
@@ -90,10 +92,17 @@ const Game = () => {
         setTimeLeft={setTimer}
       />
       <DifficultySelector onSelectDifficulty={setDifficulty} />
-      <ImageGenerator
-        onGenerate={generatePhrase}
-        onImageReady={() => setGameStarted(true)}
-      />
+      {!gameStarted && (
+        <button
+          onClick={handleGenerateClick}
+          className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+          id="generateBtn"
+        >
+          Generate
+        </button>
+      )}
+      {useOpenAI && <AIWordGenerator triggerGeneration={triggerGeneration} />}
+      <ImageGenerator />
       <GuessForm />
       <HintButton onUseHint={handleUseHint} />
       <button onClick={toggleGenerator}>

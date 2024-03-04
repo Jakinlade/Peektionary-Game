@@ -49,20 +49,20 @@ function ImageGenerator() {
 
   return (
     <div>
-      {!gameStarted && (
-        <button
-          id="generateBtn"
-          onClick={() => {
-            console.log(
-              "Generate button clicked. Starting phrase and image generation process."
-            );
-            generateImage();
-          }}
-          className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
-        >
-          Generate
-        </button>
-      )}
+      {/* {!gameStarted && (
+        // <button
+        //   id="generateBtn"
+        //   onClick={() => {
+        //     console.log(
+        //       "Generate button clicked. Starting phrase and image generation process."
+        //     );
+        //     generateImage();
+        //   }}
+        //   className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        // >
+        //   Generate
+        // </button>
+      )} */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
