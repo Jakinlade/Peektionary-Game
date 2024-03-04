@@ -4,7 +4,7 @@ import GameContext from "./GameContext";
 import WordChecker from "./wordChecker";
 
 const GuessForm = () => {
-  const { guessedWords, gameStarted } = useContext(GameContext);
+  const { currentGuessState, gameStarted } = useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
 
@@ -20,8 +20,8 @@ const GuessForm = () => {
     guessInput.current.focus();
   };
 
-  // Generate the placeholder display based on gameStarted and guessedWords
-  const placeholderDisplay = guessedWords
+  // Generate the placeholder display based on gameStarted and currentGuessState
+  const placeholderDisplay = currentGuessState
     .map((word) => word || "_".repeat(word.length))
     .join(" ");
 

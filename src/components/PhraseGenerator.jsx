@@ -5,7 +5,7 @@ import GameContext from "./GameContext";
 import apiKey from "./API";
 
 export const PhraseGenerator = ({ difficulty }) => {
-  const { setPhrase } = useContext(GameContext);
+  const { setPhrase, setCurrentGuessState } = useContext(GameContext); // Include setCurrentGuessState in the context
   const [useOpenAI, setUseOpenAI] = useState(false);
 
   const toggleGenerator = () => {
@@ -20,6 +20,10 @@ export const PhraseGenerator = ({ difficulty }) => {
       .trim();
   };
 
+  const initializeCurrentGuessState = (processedPhrase) => {
+    return processedPhrase.split(" ").map((word) => "_".repeat(word.length));
+  };
+
   const generatePhrase = async () => {
     let newPhrase = "";
     if (useOpenAI) {
@@ -27,8 +31,11 @@ export const PhraseGenerator = ({ difficulty }) => {
     } else {
       newPhrase = SlugGenerator(difficulty);
     }
-    // Preprocess the phrase to remove punctuation before setting it
-    setPhrase(preprocessPhrase(newPhrase));
+    const processedPhrase = preprocessPhrase(newPhrase);
+    setPhrase(processedPhrase); // Set the preprocessed phrase
+    const initialCurrentGuessState =
+      initializeCurrentGuessState(processedPhrase);
+    setCurrentGuessState(initialCurrentGuessState); // Initialize currentGuessState with placeholders
   };
 
   return (

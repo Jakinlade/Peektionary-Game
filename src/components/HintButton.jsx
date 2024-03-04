@@ -4,7 +4,7 @@ import getHint from "./Hint";
 
 export default function HintButton({ onUseHint }) {
   const [result, setResult] = useState("");
-  const { phrase, guessedWords } = useContext(GameContext); // Use Phrase from context
+  const { phrase, currentGuessState } = useContext(GameContext); // Use Phrase from context
 
   useEffect(() => {
     // Reset the result when the Phrase changes
@@ -16,8 +16,8 @@ export default function HintButton({ onUseHint }) {
       if (onUseHint) {
         onUseHint();
       }
-      // Pass guessedWords to getHint function
-      const hint = await getHint(phrase, guessedWords);
+      // Pass currentGuessState to getHint function
+      const hint = await getHint(phrase, currentGuessState);
       setResult(hint); // Update result with the hint
     } catch (error) {
       console.error(error);

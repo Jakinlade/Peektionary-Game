@@ -14,7 +14,7 @@ const Game = () => {
     difficulty,
     gameStarted,
     setGameStarted,
-    guessedWords,
+    currentGuessState,
     setDifficulty,
 
     imageGenerated,
@@ -54,10 +54,10 @@ const Game = () => {
   }, [imageGenerated, setGameStarted, setImageGenerated]);
 
   useEffect(() => {
-    if (gameStarted && guessedWords.every((word) => word)) {
+    if (gameStarted && currentGuessState.every((word) => word)) {
       handleGameEnd(true);
     }
-  }, [guessedWords, gameStarted, handleGameEnd]);
+  }, [currentGuessState, gameStarted, handleGameEnd]);
 
   return (
     <div className="App">
