@@ -50,7 +50,6 @@ const Game = () => {
   useEffect(() => {
     if (imageGenerated) {
       setGameStarted(true);
-      setImageGenerated(false);
     }
   }, [imageGenerated, setGameStarted, setImageGenerated]);
 
