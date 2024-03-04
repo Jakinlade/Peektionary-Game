@@ -1,23 +1,44 @@
 // GuessForm.jsx
 import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
-import WordChecker from "./wordChecker";
 
 const GuessForm = () => {
-  const { currentGuessState, gameStarted } = useContext(GameContext);
+  const { phrase, currentGuessState, setCurrentGuessState } =
+    useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
 
-  const handleInputChange = (event) => {
-    setGuess(event.target.value);
+  const handleInputChange = (e) => {
+    setGuess(e.target.value); // Update the guess state with input
+    console.log("Guess Updated:", e.target.value); // Log for debugging
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // The input for the guess will be handled by WordChecker
-    // Clear the input field and refocus after submission
+    console.log("Form submitted with guess:", guess);
+
+    const normalizedGuess = guess.trim().toLowerCase();
+    const phraseWords = phrase.toLowerCase().split(/\s+/);
+    const matchedIndices = [];
+
+    phraseWords.forEach((word, index) => {
+      if (word === normalizedGuess) {
+        matchedIndices.push(index);
+      }
+    });
+
+    if (matchedIndices.length > 0) {
+      setCurrentGuessState((prevCurrentGuessState) => {
+        const newCurrentGuessState = [...prevCurrentGuessState];
+        matchedIndices.forEach((index) => {
+          newCurrentGuessState[index] = phraseWords[index];
+        });
+        return newCurrentGuessState;
+      });
+    }
+
+    // Clear the guess input after checking
     setGuess("");
-    guessInput.current.focus();
   };
 
   // Generate the placeholder display based on gameStarted and currentGuessState
@@ -43,7 +64,6 @@ const GuessForm = () => {
           Submit
         </button>
       </form>
-      {gameStarted && <WordChecker guess={guess} setGuess={setGuess} />}
       <div className="placeholder-display">{placeholderDisplay}</div>
     </div>
   );

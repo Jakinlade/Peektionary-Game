@@ -6,7 +6,7 @@ export const GameProvider = ({ children }) => {
   const [phrase, setPhrase] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
   const [gameStarted, setGameStarted] = useState(false);
-  const [currentGuessState, setcurrentGuessState] = useState([]);
+  const [currentGuessState, setCurrentGuessState] = useState([]);
   const [useOpenAI] = useState(false);
   const [imageGenerated, setImageGenerated] = useState(false);
   const [triggerGeneration, setTriggerGeneration] = useState(false);
@@ -21,7 +21,7 @@ export const GameProvider = ({ children }) => {
         gameStarted,
         setGameStarted,
         currentGuessState,
-        setcurrentGuessState,
+        setCurrentGuessState,
         useOpenAI,
         imageGenerated,
         setImageGenerated,
