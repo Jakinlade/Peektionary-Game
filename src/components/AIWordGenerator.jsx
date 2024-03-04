@@ -3,17 +3,19 @@ import GameContext from "./GameContext";
 import { Configuration, OpenAIApi } from "openai";
 
 const AIWordGenerator = ({ triggerGeneration }) => {
-  const { difficulty, setPhrase } = useContext(GameContext);
+  const { difficulty, setPhrase, setTriggerGeneration } =
+    useContext(GameContext);
   const apiKey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
+    let isCancelled = false; // Flag to indicate if the effect has been cleaned up
+
     console.log(
       `AIWordGenerator: Trigger generation is ${
         triggerGeneration ? "on" : "off"
       }.`
     );
 
-    // Function to interact with the OpenAI API
     async function generateSlug() {
       console.log("AIWordGenerator: Starting slug generation...");
       if (!apiKey) {
@@ -24,28 +26,40 @@ const AIWordGenerator = ({ triggerGeneration }) => {
       const configuration = new Configuration({ apiKey });
       const openai = new OpenAIApi(configuration);
 
-      // Generate the prompt based on the difficulty
-      const prompt = "happy";
-      // {
-      //   easy: "Give me a simple, easy to guess noun.",
-      //   medium: "Provide a medium complexity noun.",
-      //   hard: "Give me a complex noun with adjectives.",
-      // }[difficulty] || "Give me a noun.";
+      const systemMessageContent =
+        "You are a helpful assistant who is generating words to be used to generate images for an image guessing game. The images should be interesting and the user should be able to guess what they are.";
 
-      console.log(
-        `AIWordGenerator: Generating with prompt: "${prompt}" for difficulty: ${difficulty}`
-      );
+      const userMessageContent = {
+        easy: "Give me a simple, easy-to-guess noun.",
+        medium: "Provide a medium complexity adjective followed by a noun.",
+        hard: "Give me a complex phrase with two adjectives followed by a noun.",
+      };
+
+      const prompt = userMessageContent[difficulty] || userMessageContent.easy;
 
       try {
-        const response = await openai.createCompletion({
-          model: "text-davinci-003",
-          prompt,
+        const response = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo-1106",
+          messages: [
+            {
+              role: "system",
+              content: systemMessageContent,
+            },
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
           max_tokens: 60,
           temperature: 0.5,
         });
-        const text = response.data.choices[0].text.trim();
+        const text = response.data.choices[0].message.content.trim();
         console.log(`AIWordGenerator: Received generated text: "${text}"`);
-        setPhrase(text); // Update the Phrase in GameContext
+
+        if (!isCancelled) {
+          setPhrase(text);
+          setTriggerGeneration(false); // Reset trigger after the phrase is set
+        }
       } catch (error) {
         console.error(
           "AIWordGenerator: Error generating Phrase with OpenAI:",
@@ -60,7 +74,11 @@ const AIWordGenerator = ({ triggerGeneration }) => {
       );
       generateSlug();
     }
-  }, [triggerGeneration, difficulty, apiKey, setPhrase]);
+
+    return () => {
+      isCancelled = true; // Set the flag on cleanup
+    };
+  }, [triggerGeneration, difficulty, apiKey, setPhrase, setTriggerGeneration]);
 
   return null; // This component does not render anything
 };

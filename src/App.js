@@ -7,28 +7,23 @@ import DifficultySelector from "./components/DifficultySelector";
 import GameContext from "./components/GameContext";
 import HintButton from "./components/HintButton";
 import EndGameModal from "./components/EndGameModal";
-import AIWordGenerator from "./components/AIWordGenerator";
-import SlugGenerator from "./components/SlugGenerator";
+import PhraseGenerator from "./components/PhraseGenerator"; // Corrected import
 
 const Game = () => {
-  // Utilize useContext to access game state and functions
   const {
     difficulty,
     gameStarted,
     setGameStarted,
     guessedWords,
     setDifficulty,
-    toggleGenerator,
-    useOpenAI,
-    setPhrase,
+    imageGenerated,
+    setImageGenerated,
   } = useContext(GameContext);
 
-  const [showModal, setShowModal] = React.useState(false);
-  const [score, setScore] = React.useState(0);
-  const [timer, setTimer] = React.useState(100);
-  const [triggerGeneration, setTriggerGeneration] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(100);
 
-  // Adjusted to use context state and functions
   const handleGameEnd = useCallback(
     (won = false) => {
       setGameStarted(false);
@@ -40,39 +35,25 @@ const Game = () => {
     [difficulty, timer, setGameStarted]
   );
 
-  const handleGenerateClick = () => {
-    console.log("Generate button clicked.");
-    setTriggerGeneration(true); // This will initiate the phrase generation process
-  };
-
-  // Handle hint use
   const handleUseHint = useCallback(() => {
     if (!gameStarted) return;
     setTimer((prevTimer) => Math.max(prevTimer - 10, 0));
   }, [gameStarted]);
 
   useEffect(() => {
-    if (triggerGeneration) {
-      if (useOpenAI) {
-        // Assuming AIWordGenerator will auto-trigger upon `triggerGeneration` change
-      } else {
-        const newPhrase = SlugGenerator(difficulty);
-        setPhrase(newPhrase);
-      }
-      setTriggerGeneration(false); // Reset trigger after the phrase is set
-    }
-  }, [useOpenAI, triggerGeneration, difficulty, setPhrase]);
-
-  // Game over condition
-  useEffect(() => {
     if (timer === 0 && gameStarted) {
       handleGameEnd(false);
     }
   }, [timer, gameStarted, handleGameEnd]);
 
-  // Game won condition
   useEffect(() => {
-    // Simplified to use guessedWords directly
+    if (imageGenerated) {
+      setGameStarted(true);
+      setImageGenerated(false);
+    }
+  }, [imageGenerated, setGameStarted, setImageGenerated]);
+
+  useEffect(() => {
     if (gameStarted && guessedWords.every((word) => word)) {
       handleGameEnd(true);
     }
@@ -92,23 +73,10 @@ const Game = () => {
         setTimeLeft={setTimer}
       />
       <DifficultySelector onSelectDifficulty={setDifficulty} />
-      {!gameStarted && (
-        <button
-          onClick={handleGenerateClick}
-          className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
-          id="generateBtn"
-        >
-          Generate
-        </button>
-      )}
-      {useOpenAI && <AIWordGenerator triggerGeneration={triggerGeneration} />}
+      {!gameStarted && <PhraseGenerator difficulty={difficulty} />}
       <ImageGenerator />
       <GuessForm />
       <HintButton onUseHint={handleUseHint} />
-      <button onClick={toggleGenerator}>
-        {useOpenAI ? "Use Local Generator" : "Use AI Generator"}
-        {useOpenAI && <AIWordGenerator triggerGeneration={triggerGeneration} />}
-      </button>
     </div>
   );
 };

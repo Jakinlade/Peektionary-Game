@@ -1,63 +1,44 @@
-import { useEffect, useContext } from "react";
-import GameContext from "./GameContext";
 import { Configuration, OpenAIApi } from "openai";
-import apiKey from "./API"; // Import apiKey from the centralized API file
+import apiKey from "./API"; // Import your OpenAI API key
 
-const AIWordGenerator = ({ triggerGeneration }) => {
-  const { difficulty, setPhrase } = useContext(GameContext);
+// Configure the OpenAI API client with your API key
+const configuration = new Configuration({
+  apiKey: apiKey,
+});
 
-  useEffect(() => {
-    console.log(
-      `AIWordGenerator: Trigger generation is ${
-        triggerGeneration ? "on" : "off"
-      }.`
-    );
+const openai = new OpenAIApi(configuration);
 
-    async function generateSlug() {
-      console.log("AIWordGenerator: Starting slug generation...");
-      if (!apiKey) {
-        console.warn("AIWordGenerator: OpenAI API key is not set.");
-        return;
-      }
+// Function to get a hint based on the provided slug
+const getHint = async (slug) => {
+  // Check if the API key and slug are provided
+  if (!apiKey) {
+    throw new Error("API key is missing");
+  }
+  if (!slug) {
+    throw new Error("Slug is missing");
+  }
 
-      const configuration = new Configuration({ apiKey });
-      const openai = new OpenAIApi(configuration);
-
-      const prompt =
+  try {
+    // Making a request to OpenAI API to generate a hint for the slug
+    // The request uses the GPT-3.5 Turbo model and chat completions endpoint
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo-1106",
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
         {
-          easy: "Give me a simple, easy to guess noun.",
-          medium: "Provide a medium complexity noun.",
-          hard: "Give me a complex noun with adjectives.",
-        }[difficulty] || "Give me a noun.";
+          role: "user",
+          content: `Provide a hint about the phrase '${slug}', without revealing it directly.`,
+        },
+      ],
+    });
 
-      console.log(
-        `AIWordGenerator: Generating with prompt: "${prompt}" for difficulty: ${difficulty}`
-      );
-
-      try {
-        const response = await openai.createCompletion({
-          model: "text-davinci-003",
-          prompt,
-          max_tokens: 60,
-          temperature: 0.5,
-        });
-        const text = response.data.choices[0].text.trim();
-        console.log(`AIWordGenerator: Received generated text: "${text}"`);
-        setPhrase(text); // Update the Phrase in GameContext
-      } catch (error) {
-        console.error(
-          "AIWordGenerator: Error generating Phrase with OpenAI:",
-          error
-        );
-      }
-    }
-
-    if (triggerGeneration) {
-      generateSlug();
-    }
-  }, [triggerGeneration, difficulty, setPhrase]);
-
-  return null; // This component does not render anything
+    // Returning the generated hint, trimmed for extra whitespace
+    return response.data.choices[0].message.content.trim();
+  } catch (error) {
+    // Log and re-throw errors for further handling
+    console.error("Error in generating hint:", error);
+    throw error;
+  }
 };
 
-export default AIWordGenerator;
+export default getHint;

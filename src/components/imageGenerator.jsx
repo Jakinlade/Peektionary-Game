@@ -5,11 +5,10 @@ import GameContext from "./GameContext";
 import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { phrase, setGameStarted, gameStarted } = useContext(GameContext);
+  const { phrase, setImageGenerated } = useContext(GameContext);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Memoize generateImage to only recreate if phrase or apiKey changes
   const generateImage = useCallback(async () => {
     console.log("Generating image for Phrase:", phrase);
     if (!phrase) {
@@ -18,7 +17,7 @@ function ImageGenerator() {
     }
     setLoading(true);
     const configuration = new Configuration({
-      apiKey: apiKey, // Assuming apiKey is a stable, imported value
+      apiKey: apiKey,
     });
     const openai = new OpenAIApi(configuration);
 
@@ -31,16 +30,15 @@ function ImageGenerator() {
       });
       setResult(res.data.data[0].url);
       setLoading(false); // Image generation succeeded
-      setGameStarted(true); // Start the game after the image has been successfully generated
+      setImageGenerated(true); // Notify that image is generated
     } catch (error) {
       console.error("Error generating image:", error.message || error);
       setLoading(false); // Ensure loading stops if there's an error
     }
-  }, [phrase, setGameStarted]);
+  }, [phrase, setImageGenerated]);
 
   useEffect(() => {
     if (phrase) {
-      console.log(`Phrase available for image generation: "${phrase}"`);
       generateImage();
     } else {
       console.log("Waiting for phrase to be set before generating image...");
@@ -49,20 +47,6 @@ function ImageGenerator() {
 
   return (
     <div>
-      {/* {!gameStarted && (
-        // <button
-        //   id="generateBtn"
-        //   onClick={() => {
-        //     console.log(
-        //       "Generate button clicked. Starting phrase and image generation process."
-        //     );
-        //     generateImage();
-        //   }}
-        //   className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
-        // >
-        //   Generate
-        // </button>
-      )} */}
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
@@ -76,7 +60,7 @@ function ImageGenerator() {
             alt="Generated result"
           />
         ) : (
-          <div>Image will appear here.</div> // Placeholder text or empty div as needed
+          <div>Image will appear here.</div>
         )}
       </div>
       <div
