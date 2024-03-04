@@ -25,12 +25,12 @@ const AIWordGenerator = ({ triggerGeneration }) => {
       const openai = new OpenAIApi(configuration);
 
       // Generate the prompt based on the difficulty
-      const prompt =
-        {
-          easy: "Give me a simple, easy to guess noun.",
-          medium: "Provide a medium complexity noun.",
-          hard: "Give me a complex noun with adjectives.",
-        }[difficulty] || "Give me a noun.";
+      const prompt = "happy";
+      // {
+      //   easy: "Give me a simple, easy to guess noun.",
+      //   medium: "Provide a medium complexity noun.",
+      //   hard: "Give me a complex noun with adjectives.",
+      // }[difficulty] || "Give me a noun.";
 
       console.log(
         `AIWordGenerator: Generating with prompt: "${prompt}" for difficulty: ${difficulty}`
