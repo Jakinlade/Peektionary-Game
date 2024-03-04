@@ -1,86 +1,49 @@
-import { useEffect, useContext } from "react";
-import GameContext from "./GameContext";
 import { Configuration, OpenAIApi } from "openai";
 
-const AIWordGenerator = ({ triggerGeneration }) => {
-  const { difficulty, setPhrase, setTriggerGeneration } =
-    useContext(GameContext);
-  const apiKey = process.env.REACT_APP_API_KEY;
+const AIWordGenerator = async (difficulty, apiKey) => {
+  if (!apiKey) {
+    console.warn("AIWordGenerator: OpenAI API key is not set.");
+    return "";
+  }
 
-  useEffect(() => {
-    let isCancelled = false; // Flag to indicate if the effect has been cleaned up
+  const configuration = new Configuration({ apiKey });
+  const openai = new OpenAIApi(configuration);
 
-    console.log(
-      `AIWordGenerator: Trigger generation is ${
-        triggerGeneration ? "on" : "off"
-      }.`
-    );
+  const systemMessageContent =
+    "You are a creative assistant. Your task is to generate unique and diverse phrases for a guessing game where players guess the prompt from images. Aim for variety and avoid repetition to keep the game interesting. The adjectives you use should be visually descriptive";
 
-    async function generateSlug() {
-      console.log("AIWordGenerator: Starting slug generation...");
-      if (!apiKey) {
-        console.warn("AIWordGenerator: OpenAI API key is not set.");
-        return;
-      }
+  const userMessageContent = {
+    easy: "Suggest a unique and simple noun that is easy to visualize and can be drawn in many different ways.",
+    medium:
+      "Come up with an unusual adjective-noun combination that is quirky and unexpected.",
+    hard: "Create an imaginative phrase with two adjectives and a noun that would make for a surprising and amusing image. Keep each word under 8 characters.",
+  };
 
-      const configuration = new Configuration({ apiKey });
-      const openai = new OpenAIApi(configuration);
+  const prompt = userMessageContent[difficulty] || userMessageContent.easy;
 
-      const systemMessageContent =
-        "You are a helpful assistant who is generating words to be used to generate images for an image guessing game. The images should be interesting and the user should be able to guess what they are.";
-
-      const userMessageContent = {
-        easy: "Give me a simple, easy-to-guess noun.",
-        medium: "Provide a medium complexity adjective followed by a noun.",
-        hard: "Give me a complex phrase with two adjectives followed by a noun.",
-      };
-
-      const prompt = userMessageContent[difficulty] || userMessageContent.easy;
-
-      try {
-        const response = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo-1106",
-          messages: [
-            {
-              role: "system",
-              content: systemMessageContent,
-            },
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          max_tokens: 60,
-          temperature: 0.5,
-        });
-        const text = response.data.choices[0].message.content.trim();
-        console.log(`AIWordGenerator: Received generated text: "${text}"`);
-
-        if (!isCancelled) {
-          setPhrase(text);
-          setTriggerGeneration(false); // Reset trigger after the phrase is set
-        }
-      } catch (error) {
-        console.error(
-          "AIWordGenerator: Error generating Phrase with OpenAI:",
-          error
-        );
-      }
-    }
-
-    if (triggerGeneration) {
-      console.log(
-        "AIWordGenerator: Trigger generation is active. Generating slug..."
-      );
-      generateSlug();
-    }
-
-    return () => {
-      isCancelled = true; // Set the flag on cleanup
-    };
-  }, [triggerGeneration, difficulty, apiKey, setPhrase, setTriggerGeneration]);
-
-  return null; // This component does not render anything
+  try {
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo-0125",
+      messages: [
+        {
+          role: "system",
+          content: systemMessageContent,
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      max_tokens: 60,
+      temperature: 0.5,
+    });
+    const text = response.data.choices[0].message.content.trim();
+    console.log(`AIWordGenerator: Received generated text: "${text}"`);
+    return text;
+  } catch (error) {
+    console.error("AIWordGenerator: Error generating slug with OpenAI:", error);
+    return "";
+  }
 };
 
 export default AIWordGenerator;
