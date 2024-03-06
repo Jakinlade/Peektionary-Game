@@ -3,13 +3,21 @@ import GameContext from "./GameContext";
 
 // Functional component for selecting game difficulty
 const DifficultySelector = ({ onSelectDifficulty }) => {
-  const { gameStarted } = useContext(GameContext); // Call useContext inside the component
+  const { gameStarted, difficulty } = useContext(GameContext); // Use `difficulty` from GameContext
+
   // Function to handle difficulty selection
-  const handleDifficultyClick = (difficulty) => {
+  const handleDifficultyClick = (selectedDifficulty) => {
     // Call the passed onSelectDifficulty function with the chosen difficulty
-    onSelectDifficulty(difficulty);
+    onSelectDifficulty(selectedDifficulty);
     // Log the selected difficulty to the console (useful for debugging)
-    console.log("Selected difficulty:", difficulty);
+    console.log("Selected difficulty:", selectedDifficulty);
+  };
+
+  // Helper function to determine button className
+  const getButtonClass = (buttonDifficulty) => {
+    return `hover:font-extrabold ${
+      difficulty === buttonDifficulty ? "font-bold" : ""
+    }`;
   };
 
   // Rendering the difficulty selection buttons
@@ -18,34 +26,30 @@ const DifficultySelector = ({ onSelectDifficulty }) => {
       {!gameStarted && (
         <div
           id="select-level"
-          // Styling for the difficulty selection container
           className="scale-5 text-xl border-2 border-solid border-zinc-900 flex justify-evenly bg-gray-300"
         >
           <h2>Select difficulty:</h2>
-          {/* Button for selecting 'Easy' difficulty */}
+          {/* Buttons for selecting difficulty */}
           <button
             onClick={() => handleDifficultyClick("easy")}
-            className="hover:font-extrabold"
+            className={getButtonClass("easy")}
           >
             Easy
           </button>
-          {/* Button for selecting 'Medium' difficulty */}
           <button
             onClick={() => handleDifficultyClick("medium")}
-            className="hover:font-extrabold"
+            className={getButtonClass("medium")}
           >
             Medium
           </button>
-          {/* Button for selecting 'Hard' difficulty */}
           <button
             onClick={() => handleDifficultyClick("hard")}
-            className="hover:font-extrabold"
+            className={getButtonClass("hard")}
           >
             Hard
           </button>
         </div>
       )}
-      {/* Additional decorative or layout element */}
       {!gameStarted && (
         <div
           id="back-box-one"

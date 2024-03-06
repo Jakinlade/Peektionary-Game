@@ -10,7 +10,7 @@ const GuessForm = () => {
 
   const handleInputChange = (e) => {
     setGuess(e.target.value); // Update the guess state with input
-    console.log("Guess Updated:", e.target.value); // Log for debugging
+    // console.log("Guess Updated:", e.target.value); // Log for debugging
   };
 
   const handleFormSubmit = (event) => {

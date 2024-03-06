@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import { generateSlug } from "random-word-slugs";
 
 const AIWordGenerator = async (difficulty, apiKey) => {
   if (!apiKey) {
@@ -6,20 +7,29 @@ const AIWordGenerator = async (difficulty, apiKey) => {
     return "";
   }
 
+  const slug = generateSlug(1, {
+    partsOfSpeech: ["noun"],
+    categories: {
+      noun: ["animals", "food", "place", "sports", "thing", "transportation"],
+    },
+  });
+  console.log("Slug set as food:", { slug });
+
   const configuration = new Configuration({ apiKey });
   const openai = new OpenAIApi(configuration);
 
-  const systemMessageContent =
-    "You are a creative assistant. Your task is to generate unique and diverse phrases for a guessing game where players guess the prompt from images. Aim for variety and avoid repetition to keep the game interesting. The adjectives you use should be visually descriptive";
+  // System message remains the same as you want to keep it general for creative prompts
+  const systemMessageContent = `Your task is to generate phrases related to "${slug}" for a guessing game where the player must guess what an image is. Focus on creating visually descriptive and engaging images that vary based on the word's broad category and could reasonably be guessed from what they look like.`;
 
-  const userMessageContent = {
-    easy: "Suggest a unique and simple noun that is easy to visualize and can be drawn in many different ways.",
-    medium:
-      "Come up with an unusual adjective-noun combination that is quirky and unexpected.",
-    hard: "Create an imaginative phrase with two adjectives and a noun that would make for a surprising and amusing image. Keep each word under 8 characters.",
-  };
-
-  const prompt = userMessageContent[difficulty] || userMessageContent.easy;
+  let userMessageContent;
+  if (difficulty === "easy") {
+    userMessageContent = `Give me 1 noun that is similar to the kind of thing that ${slug} is. make it something that could be easily guessed just from seeing the image.`;
+  } else if (difficulty === "medium") {
+    userMessageContent = `Give me a visually descriptive basic adjective and a noun in the same broad category as ${slug}. Exactly 2 words.`;
+  } else {
+    // hard
+    userMessageContent = `Give me 3 words that are a noun and 2 adjectives to describe it. make them visually descriptive adjectives and a noun in the same broad category as ${slug}. Exactly 3 words in the format "big round dog"`;
+  }
 
   try {
     const response = await openai.createChatCompletion({
@@ -31,17 +41,28 @@ const AIWordGenerator = async (difficulty, apiKey) => {
         },
         {
           role: "user",
-          content: prompt,
+          content: userMessageContent,
         },
       ],
       max_tokens: 60,
-      temperature: 0.5,
+      temperature: 1.0,
     });
-    const text = response.data.choices[0].message.content.trim();
+
+    // This logic ensures the response is trimmed to the correct number of words based on difficulty
+    const maxWords =
+      difficulty === "hard" ? 3 : difficulty === "medium" ? 2 : 1;
+    const text = response.data.choices[0].message.content
+      .trim()
+      .split(" ")
+      .slice(0, maxWords)
+      .join(" ");
     console.log(`AIWordGenerator: Received generated text: "${text}"`);
     return text;
   } catch (error) {
-    console.error("AIWordGenerator: Error generating slug with OpenAI:", error);
+    console.error(
+      "AIWordGenerator: Error generating phrase with OpenAI:",
+      error
+    );
     return "";
   }
 };
