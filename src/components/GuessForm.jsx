@@ -1,37 +1,50 @@
+// GuessForm.jsx
 import React, { useState, useRef, useContext } from "react";
 import GameContext from "./GameContext";
 
 const GuessForm = () => {
-  const { updateGuessedWords, guessedWords, slug, gameStarted } =
+  const { phrase, currentGuessState, setCurrentGuessState } =
     useContext(GameContext);
   const [guess, setGuess] = useState("");
   const guessInput = useRef(null);
 
-  const handleInputChange = (event) => {
-    setGuess(event.target.value);
+  const handleInputChange = (e) => {
+    setGuess(e.target.value); // Update the guess state with input
+    // console.log("Guess Updated:", e.target.value); // Log for debugging
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (gameStarted) {
-      updateGuessedWords(guess);
+    console.log("Form submitted with guess:", guess);
+
+    const normalizedGuess = guess.trim().toLowerCase();
+    const phraseWords = phrase.toLowerCase().split(/\s+/);
+    const matchedIndices = [];
+
+    phraseWords.forEach((word, index) => {
+      if (word === normalizedGuess) {
+        matchedIndices.push(index);
+      }
+    });
+
+    if (matchedIndices.length > 0) {
+      setCurrentGuessState((prevCurrentGuessState) => {
+        const newCurrentGuessState = [...prevCurrentGuessState];
+        matchedIndices.forEach((index) => {
+          newCurrentGuessState[index] = phraseWords[index];
+        });
+        return newCurrentGuessState;
+      });
     }
-    setGuess(""); // Clear the guess input after submission
-    guessInput.current.focus(); // Refocus on the input field
+
+    // Clear the guess input after checking
+    setGuess("");
   };
 
-  // Generate the placeholder display based on gameStarted
-  const placeholderDisplay =
-    slug && gameStarted
-      ? slug
-          .split(" ")
-          .map((word, index) =>
-            guessedWords && guessedWords[index]
-              ? guessedWords[index]
-              : "_".repeat(word.length)
-          )
-          .join(" ")
-      : "";
+  // Generate the placeholder display based on gameStarted and currentGuessState
+  const placeholderDisplay = currentGuessState
+    .map((word) => word || "_".repeat(word.length))
+    .join(" ");
 
   return (
     <div className="guess-form-container">
@@ -44,13 +57,13 @@ const GuessForm = () => {
             onChange={handleInputChange}
             ref={guessInput}
             className="guess-input"
+            autoComplete="off"
           />
         </label>
         <button type="submit" className="submit-button">
           Submit
         </button>
       </form>
-      {/* Display the placeholders or guessed words */}
       <div className="placeholder-display">{placeholderDisplay}</div>
     </div>
   );

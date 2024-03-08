@@ -1,23 +1,19 @@
 import { Configuration, OpenAIApi } from "openai";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import apiKey from "./API";
 import GameContext from "./GameContext";
 import LoadingImage from "./loading-face.gif"; // Ensure the path is correct
 
 function ImageGenerator() {
-  const { slug, generateSlug, setGameStarted } = useContext(GameContext); // Include setGameStarted in useContext
+  const { phrase, setImageGenerated } = useContext(GameContext);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    generateSlug();
-  }, [generateSlug]);
-
-  const generateImage = async () => {
-    console.log("Generating image for slug:", slug);
-    if (!slug) {
-      console.log("No slug provided for image generation");
-      return; // Prevent API call if slug is empty
+  const generateImage = useCallback(async () => {
+    console.log("Generating image for Phrase:", phrase);
+    if (!phrase) {
+      console.log("No Phrase provided for image generation");
+      return; // Prevent API call if phrase is empty
     }
     setLoading(true);
     const configuration = new Configuration({
@@ -28,28 +24,29 @@ function ImageGenerator() {
     try {
       const res = await openai.createImage({
         model: "dall-e-3",
-        prompt: slug,
+        prompt: phrase,
         n: 1,
         size: "1024x1024",
       });
       setResult(res.data.data[0].url);
       setLoading(false); // Image generation succeeded
-      setGameStarted(true); // Start the game after the image has been successfully generated
+      setImageGenerated(true); // Notify that image is generated
     } catch (error) {
       console.error("Error generating image:", error.message || error);
       setLoading(false); // Ensure loading stops if there's an error
     }
-  };
+  }, [phrase, setImageGenerated]);
+
+  useEffect(() => {
+    if (phrase) {
+      generateImage();
+    } else {
+      console.log("Waiting for phrase to be set before generating image...");
+    }
+  }, [phrase, generateImage]);
 
   return (
     <div>
-      <button
-        id="generateBtn"
-        onClick={generateImage}
-        className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
-      >
-        Generate
-      </button>
       <div
         id="image-container"
         className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
@@ -63,7 +60,7 @@ function ImageGenerator() {
             alt="Generated result"
           />
         ) : (
-          <div>Image will appear here.</div> // Placeholder text or empty div as needed
+          <div>Image will appear here.</div>
         )}
       </div>
       <div

@@ -4,20 +4,20 @@ import getHint from "./Hint";
 
 export default function HintButton({ onUseHint }) {
   const [result, setResult] = useState("");
-  const { slug } = useContext(GameContext); // Use slug from context
+  const { phrase, currentGuessState } = useContext(GameContext); // Use Phrase from context
 
   useEffect(() => {
-    // Reset the result when the slug changes
+    // Reset the result when the Phrase changes
     setResult("");
-  }, [slug]); // Dependency on slug ensures effect runs when slug updates
+  }, [phrase]); // Dependency on Phrase ensures effect runs when Phrase updates
 
   async function handleClick() {
     try {
-      // Call onUseHint if it's defined
       if (onUseHint) {
         onUseHint();
       }
-      const hint = await getHint(slug); // Use current slug from context
+      // Pass currentGuessState to getHint function
+      const hint = await getHint(phrase, currentGuessState);
       setResult(hint); // Update result with the hint
     } catch (error) {
       console.error(error);
