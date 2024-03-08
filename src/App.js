@@ -17,20 +17,21 @@ const Game = () => {
     currentGuessState,
     setDifficulty,
     imageGenerated,
+    phrase,
   } = useContext(GameContext);
 
-  console.log("Initial States:", {
-    difficulty,
-    gameStarted,
-    currentGuessState,
-    imageGenerated,
-  });
+  // console.log("Initial States:", {
+  //   difficulty,
+  //   gameStarted,
+  //   currentGuessState,
+  //   imageGenerated,
+  // });
 
   const [showModal, setShowModal] = useState(false);
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(100);
 
-  console.log("Component States:", { showModal, score, timer });
+  // console.log("Component States:", { showModal, score, timer });
 
   const handleGameEnd = useCallback(
     (won = false) => {
@@ -51,7 +52,7 @@ const Game = () => {
   }, [gameStarted]);
 
   useEffect(() => {
-    console.log("Timer Check:", timer);
+    // console.log("Timer Check:", timer);
     if (timer === 0 && gameStarted) {
       console.log("Timer expired");
       handleGameEnd(false);
@@ -67,7 +68,7 @@ const Game = () => {
   }, [imageGenerated, setGameStarted]);
 
   useEffect(() => {
-    console.log("Checking win condition", { currentGuessState, gameStarted });
+    // console.log("Checking win condition", { currentGuessState, gameStarted });
     if (
       gameStarted &&
       currentGuessState.every(
@@ -86,6 +87,7 @@ const Game = () => {
         setShowModal={setShowModal}
         score={score}
         gameWon={score > 0}
+        correctPhrase={phrase}
       />
       <CountdownTimer
         gameStarted={gameStarted}
