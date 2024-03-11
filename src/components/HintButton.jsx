@@ -28,14 +28,13 @@ export default function HintButton({ onUseHint }) {
   // Render the HintButton and the area to display the result (hint)
   return (
     <div
-      id="hint"
-      className="text-base border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
-    >
+      
+      className="flex justify-center p-2">
       <main>
         {/* Button that triggers the hint request */}
         <button
           onClick={handleClick}
-          className="text-xl border-2 border-solid border-zinc-900 p-px bg-rose-700 text-white hover:bg-blue-700"
+          className="rounded-md bg-sky-100 px-10 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           Hint!
         </button>

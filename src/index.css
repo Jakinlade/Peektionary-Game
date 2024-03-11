@@ -9,7 +9,8 @@ body {
   font-family: "Space Grotesk", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("./images/bg-one.svg");
+  /* Replace the background-image property with the background property for a gradient */
+  background: linear-gradient(to bottom, #3494e6, #f3e4eb);
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
@@ -82,13 +83,7 @@ code {
   margin-right: auto;
 }
 
-#hint {
-  width: 30rem;
-  margin-bottom: 0.5rem;
-  margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 #image-container {
   width: 30rem;

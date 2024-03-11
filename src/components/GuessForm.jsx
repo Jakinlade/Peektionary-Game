@@ -47,24 +47,24 @@ const GuessForm = () => {
     .join(" ");
 
   return (
-    <div className="guess-form-container">
-      <form onSubmit={handleFormSubmit} className="guess-form">
-        <label className="guess-label">
-          Guess:
+    <div className="flex justify-center">
+      <form onSubmit={handleFormSubmit} className="">
+        <label className="">
+          
           <input
             type="text"
             value={guess}
             onChange={handleInputChange}
             ref={guessInput}
-            className="guess-input"
+            className="m-10"
             autoComplete="off"
           />
         </label>
-        <button type="submit" className="submit-button">
+        <button className="rounded-md bg-green-100 px-10 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
           Submit
         </button>
       </form>
-      <div className="placeholder-display">{placeholderDisplay}</div>
+      <div className="align-bottom placeholder-display">{placeholderDisplay}</div>
     </div>
   );
 };

@@ -38,8 +38,8 @@ export const PhraseGenerator = ({ difficulty }) => {
   };
 
   return (
-    <div>
-      <h2>Phrase Generator:</h2>
+    <div className="">
+      <h2>Word Generator:</h2>
       {/* Buttons for selecting the generator type */}
       <button
         onClick={() => setUseOpenAI(true)}
@@ -56,7 +56,7 @@ export const PhraseGenerator = ({ difficulty }) => {
       {/* Play Button remains the same */}
       <button
         onClick={generatePhrase}
-        className="text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300 hover:bg-teal-700 hover:text-white"
+        className="flex justify-around p-px text-2xl bg-gray-300 border-2 border-solid border-zinc-900 hover:bg-teal-700 hover:text-white"
         id="generateBtn"
       >
         Play

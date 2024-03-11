@@ -49,7 +49,7 @@ function ImageGenerator() {
     <div>
       <div
         id="image-container"
-        className="app-main text-2xl border-2 border-solid border-zinc-900 flex justify-around p-px bg-gray-300"
+        className="flex justify-around p-px text-2xl bg-white shadow-xl rounded-xl "
       >
         {loading ? (
           <img src={LoadingImage} alt="Loading..." />
@@ -60,7 +60,12 @@ function ImageGenerator() {
             alt="Generated result"
           />
         ) : (
-          <div>Image will appear here.</div>
+          <img
+            className="object-fill"
+            src={LoadingImage}
+            style={{ objectFit: "cover" }}
+            alt="Placeholder"
+          />
         )}
       </div>
       <div

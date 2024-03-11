@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Layout from "./components/Layout"
+
 import { GameProvider } from "./components/GameContext"; // Import GameProvider
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -12,9 +12,9 @@ root.render(
     <GameProvider>
       {" "}
       {/* Wrap App and its children with GameProvider */}
-      <Header />
+      <Layout>
       <App />
-      <Footer />
+      </Layout>
     </GameProvider>
   </React.StrictMode>
 );
