@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { GameProvider } from "./components/GameContext"; // Import GameProvider
 
@@ -13,6 +14,7 @@ root.render(
       {/* Wrap App and its children with GameProvider */}
       <Header />
       <App />
+      <Footer />
     </GameProvider>
   </React.StrictMode>
 );

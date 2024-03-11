@@ -4,8 +4,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from "../images/logo.svg";
 
 const navigation = [
-  { name: 'How to Play', href: '#' },
-  { name: 'About', href: '#' },
+  { name: 'How to Play', href: 'howto' },
+  { name: 'About', href: 'about' },
 ];
 
 export default function Header() {
